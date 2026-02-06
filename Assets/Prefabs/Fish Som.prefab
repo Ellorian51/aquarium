@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9047919098776720677}
   - component: {fileID: 1340538064853767933}
   m_Layer: 0
-  m_Name: Fish (1)
+  m_Name: Fish Som
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8107871626100986435, guid: d9d72b8402d6bf344b719305bcdb7cbf, type: 3}
+  m_Sprite: {fileID: 3466652502813292153, guid: 5b9009d92ab09f4458297b0abcbffec8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,7 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdcea4f52a69b7d4192c559182e700d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fish
-  swimSpeed: 2
+  swimSpeed: 100
   startDirection: 1
-  waterDamage: 3
+  yOffsetSeed: 1
+  bottomDweller: 1
   aquarium: {fileID: 0}
