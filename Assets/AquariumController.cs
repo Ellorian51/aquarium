@@ -9,17 +9,21 @@ public class AquariumController : MonoBehaviour
     public float topLimit = 1.3f;
 
     [Header("Спавн рыб")]
-    public GameObject fishPrefab;  // Перетащили prefab
+    public GameObject fishPrefab;  // ← Перетащили ваш Fish prefab сюда!
 
-    [ContextMenu("🐟 Добавить рыбу")]  // Правой кнопка → спавн!
+    // 🔥 КНОПКА СПАВНА В INSPECTOR!
+    [ContextMenu("🐟 Добавить рыбу")]
     public void AddFish()
     {
+        // Случайная позиция
         float x = Random.Range(leftLimit + 0.5f, rightLimit - 0.5f);
         float y = Random.Range(bottomLimit + 0.5f, topLimit - 0.5f);
         Vector3 pos = new Vector3(x, y, 0);
         
+        // Создаём рыбу
         GameObject fish = Object.Instantiate(fishPrefab, pos, Quaternion.identity, transform);
         
+        // Настройки
         Fish script = fish.GetComponent<Fish>();
         if (script != null)
         {
