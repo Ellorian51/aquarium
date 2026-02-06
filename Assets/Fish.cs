@@ -9,9 +9,6 @@ public class Fish : MonoBehaviour
     
     [Header("Y Offset (для асинхронности)")]
     public float yOffsetSeed = 0f;
-    
-    [Header("Damage (later)")]
-    public float waterDamage = 3f;
 
     // Ссылка на аквариум
     public AquariumController aquarium;
