@@ -1,4 +1,3 @@
-using DefaultNamespace;
 using UnityEngine;
 
 public class Fish : MonoBehaviour
@@ -12,28 +11,21 @@ public class Fish : MonoBehaviour
 
     // Ссылка на аквариум
     public AquariumController aquarium;
-
-    private float timer = 0f;
     private int direction = 1;
     private float yOffsetPhase;
-
-    [SerializeField] private SpriteRenderer _spriteRenderer;
 
     void Start()
     {
         direction = startDirection;
-        yOffsetPhase = yOffsetSeed + Random.Range(0f, Mathf.PI * 2f);  // Индивидуальный сдвиг Y
+        yOffsetPhase = yOffsetSeed + Random.Range(0f, Mathf.PI * 2f);
+        if (aquarium == null)
+        {
+            aquarium = GetComponentInParent<AquariumController>();
+        }
     }
 
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= 5f)
-        {
-            timer = 0f;
-            // позже тут будем портить воду
-        }
-
         // Движение по X
         float moveX = direction * swimSpeed * Time.deltaTime;
         Vector3 newPos = transform.position + new Vector3(moveX, 0f, 0f);
@@ -69,11 +61,10 @@ public class Fish : MonoBehaviour
         }
 
         transform.position = newPos;
-        float tailScale = 1f + Mathf.Sin(Time.time * 4f + yOffsetPhase) * 0.1f;  // Асинхронный хвост
-        Vector3 scale = transform.localScale;
-        scale.x = Mathf.Abs(tailScale) * (direction > 0 ? 1 : -1);
-        transform.localScale = scale;
 
-        _spriteRenderer.sortingOrder = Mathf.RoundToInt(transform.position.y * -100);
+        // Только разворот (без хвоста)
+        Vector3 scale = transform.localScale;
+        scale.x = Mathf.Abs(scale.x) * (direction > 0 ? 1 : -1);
+        transform.localScale = scale;
     }
 }
