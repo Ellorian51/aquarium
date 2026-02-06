@@ -59,9 +59,7 @@ public class Fish : MonoBehaviour
         {
             newPos.y = yOffset;
         }
-
         transform.position = newPos;
-
         // Только разворот (без хвоста)
         Vector3 scale = transform.localScale;
         scale.x = Mathf.Abs(scale.x) * (direction > 0 ? 1 : -1);
