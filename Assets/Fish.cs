@@ -1,84 +1,78 @@
-using UnityEngine;  // Всё базовое Unity (Vector3, Time, Random)
+using UnityEngine;
 
-public class Fish : MonoBehaviour  // Этот скрипт на КАЖДОЙ рыбе
+public class Fish : MonoBehaviour
 {
-    // ========================================
-    // ПАРАМЕТРЫ (видны в Inspector префаба!)
-    // ========================================
     [Header("Скорость и направление")]
-    public float swimSpeed = 1f;       // СКОРОСТЬ плавания (0.5=медленно, 2=быстро)
-    public int startDirection = 1;     // НАЧАЛЬНОЕ направление: 1=→, -1=←
+    public float swimSpeed = 1f;     // БАЗОВАЯ СКОРОСТЬ (из Inspector!)
+    public int startDirection = 1;     // 1=→, -1=←
 
     [Header("Волны Y (асинхронность стаи)")]
-    public float yOffsetSeed = 0f;     // ФАЗОВЫЙ СДВИГ: 0=синхронно, 1.5=разные волны
+    public float yOffsetSeed = 0f;     // ФАЗОВЫЙ СДВИГ
 
     [Header("ПОВЕДЕНИЕ ВИДА рыбы")]
-    public bool bottomDweller = false; // TRUE=сом (по дну), FALSE=обычная (волны)
+    public bool bottomDweller = false; // TRUE=сом (по дну)
 
-    // ========================================
-    // ПЕРЕМЕННЫЕ (скрытые, Unity управляет)
-    // ========================================
-    public AquariumController aquarium; // ССЫЛКА на родителя (границы)
-    private int direction = 1;          // ТЕКУЩЕЕ направление (меняется при отскоке)
-    private float yOffsetPhase;         // ФАЗА волны Y (уникальна для рыбы)
+    // 🔥 ПЕРЕМЕННЫЕ для ЖИВОЙ скорости
+    private float baseSwimSpeed;       // Запоминаем базовую
+    private float speedVariation;      // Уникальная вариация рыбы
+    private int direction = 1;
+    private float yOffsetPhase;
+    public AquariumController aquarium;
 
-    // ========================================
-    // START: настройка 1 раз при рождении
-    // ========================================
     void Start()
     {
-        direction = startDirection;  // Берём из Inspector
-        yOffsetPhase = yOffsetSeed + Random.Range(0f, Mathf.PI * 2f);  // +случайность
+        direction = startDirection;
+        yOffsetPhase = yOffsetSeed + Random.Range(0f, Mathf.PI * 2f);
         
-        // Ищем аквариум-родителя (если не назначен)
+        // 🔥 ЖИВАЯ СКОРОСТЬ: уникальная личность + дыхание
+        baseSwimSpeed = swimSpeed;                    // Из Inspector
+        speedVariation = Random.Range(0.7f, 1.3f);    // ±30% уникальности
+        
         if (aquarium == null)
             aquarium = GetComponentInParent<AquariumController>();
     }
 
-    // ========================================
-    // UPDATE: движение КАЖДЫЙ КАДР (60 раз/сек)
-    // ========================================
     void Update()
     {
-        // 1. ДВИЖЕНИЕ ПО X (горизонталь)
-        float moveX = direction * swimSpeed * Time.deltaTime;  // СКОРОСТЬ * время (плавно)
+        // 🔥 ТЕКУЩАЯ скорость: база × личность × дыхание (±10%)
+        float currentSpeed = baseSwimSpeed * speedVariation * (1f + Mathf.Sin(Time.time * 0.5f) * 0.1f);
+        float moveX = direction * currentSpeed * Time.deltaTime;
         Vector3 newPos = transform.position + new Vector3(moveX, 0f, 0f);
 
-        // 2. ОТСКОК ОТ СТЕН X
+        // Отскок X
         if (aquarium != null)
         {
-            if (newPos.x > aquarium.rightLimit)     // Упёрлись в правую стену?
+            if (newPos.x > aquarium.rightLimit)
             {
-                newPos.x = aquarium.rightLimit;     // Прижать к стене
-                direction = -1;                     // Развернуть ←
+                newPos.x = aquarium.rightLimit;
+                direction = -1;
             }
-            else if (newPos.x < aquarium.leftLimit) // Левая стена?
+            else if (newPos.x < aquarium.leftLimit)
             {
                 newPos.x = aquarium.leftLimit;
-                direction = 1;                      // Развернуть →
+                direction = 1;
             }
         }
 
-        // 3. ПОЗИЦИЯ Y (вертикаль)
+        // Y позиция
         float yOffset;
-        if (bottomDweller)  // СОМ: покачивается у дна
+        if (bottomDweller)
         {
-            yOffset = aquarium.bottomLimit + 0.9f + Mathf.Sin(Time.time * 1f + yOffsetPhase) * 0.1f;  // ДНО + маленькая синусоида
+            yOffset = aquarium.bottomLimit + 0.9f + Mathf.Sin(Time.time * 1f + yOffsetPhase) * 0.1f;
         }
-        else                // ОБЫЧНЫЕ РЫБЫ: волны
+        else
         {
-            yOffset = Mathf.Sin(Time.time * 2f + yOffsetPhase) * 0.5f;  // СИНУСОИДА вверх-вниз
+            yOffset = Mathf.Sin(Time.time * 2f + yOffsetPhase) * 0.5f;
             if (aquarium != null)
-                yOffset = Mathf.Clamp(yOffset, aquarium.bottomLimit, aquarium.topLimit);  // Границы Y
+                yOffset = Mathf.Clamp(yOffset, aquarium.bottomLimit, aquarium.topLimit);
         }
         newPos.y = yOffset;
 
-        // 4. ПРИМЕНЯЕМ новую позицию
         transform.position = newPos;
         
-        // 5. РАЗВОРОТ спрайта (не поворот)
+        // Разворот спрайта
         Vector3 scale = transform.localScale;
-        scale.x = Mathf.Abs(scale.x) * (direction > 0 ? 1 : -1);  // → scale.x>0, ← scale.x<0
+        scale.x = Mathf.Abs(scale.x) * (direction > 0 ? 1 : -1);
         transform.localScale = scale;
     }
 }
