@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1340538064853767933}
   - component: {fileID: 387146017040779784}
   - component: {fileID: -3495592589719757275}
-  - component: {fileID: 6191958923623914370}
   m_Layer: 0
   m_Name: Fish Som
   m_TagString: Untagged
@@ -148,17 +147,3 @@ MonoBehaviour:
   moveInterval: 10
   stayDurationMin: 3
   stayDurationMax: 5
---- !u!114 &6191958923623914370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6392574676814734785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28565125da335cc49bbb35a08bd84928, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Plant
-  feedingPoints:
-  - {fileID: 0}
