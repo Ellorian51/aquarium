@@ -109,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fish
   bottomDweller: 0
   isAggressive: 0
-  favoritePlant: {fileID: 0}
+  favoritePlant: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
   aquarium: {fileID: 0}
 --- !u!114 &387146017040779784
 MonoBehaviour:
@@ -132,6 +132,8 @@ MonoBehaviour:
   pauseDurationMax: 0.45
   directionChangeChance: 0.0026
   yWobbleAmount: 0.146
+  fleeSpeedMultiplier: 2.5
+  fleeDuration: 1
 --- !u!114 &6082326187590262783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6651fe5f3ff14545ad02f53f81ed0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToPointBehavior
-  plant: {fileID: 0}
+  plant: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
   speed: 3
   feedingRadius: 0.1
   moveInterval: 30

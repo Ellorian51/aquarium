@@ -109,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fish
   bottomDweller: 1
   isAggressive: 0
-  favoritePlant: {fileID: 0}
+  favoritePlant: {fileID: 3235766808957084028, guid: 660ca52b92b38ef4fb2def901652c7b8, type: 3}
   aquarium: {fileID: 0}
 --- !u!114 &387146017040779784
 MonoBehaviour:
@@ -132,6 +132,8 @@ MonoBehaviour:
   pauseDurationMax: 1
   directionChangeChance: 0.005
   yWobbleAmount: 0.19
+  fleeSpeedMultiplier: 2.5
+  fleeDuration: 1
 --- !u!114 &-3495592589719757275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,17 +141,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6392574676814734785}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6651fe5f3ff14545ad02f53f81ed0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToPointBehavior
-  plant: {fileID: 0}
-  speed: 1
+  plant: {fileID: 3235766808957084028, guid: 660ca52b92b38ef4fb2def901652c7b8, type: 3}
+  speed: 2.5
   feedingRadius: 0.2
-  moveInterval: 10
-  stayDurationMin: 3
-  stayDurationMax: 5
+  moveInterval: 16
+  stayDurationMin: 5
+  stayDurationMax: 6
 --- !u!58 &-6577462633676196313
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -185,4 +187,4 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 1
+  m_Radius: 0.5
