@@ -8,7 +8,6 @@ public class Plant : MonoBehaviour
 {
     [Header("🆔 ID СИСТЕМА")]
     [SerializeField] public string plantID = "Plant1";  // Plant1, Plant2, Plant3...
-    
     [Header("Точки кормежки")]
     public Transform[] feedingPoints; // сюда через инспектор добавляем точки внутри префаба
     

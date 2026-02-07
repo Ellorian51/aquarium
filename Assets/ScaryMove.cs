@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ScaryMove : MonoBehaviour
@@ -7,8 +8,8 @@ public class ScaryMove : MonoBehaviour
     public float detectRadius = 1.5f;
     
     [Header("Логика")]
-    [Range(1f, 5f)]  // 🔥 УВЕЛИЧИЛ МИНИМУМ
-    public float fleeCooldown = 2f;  // было 0.5f — реже пугает!
+    [Range(1f, 5f)] 
+    public float fleeCooldown = 2f;
 
     private Fish _fish;
     private float _lastScareTime;
@@ -19,6 +20,7 @@ public class ScaryMove : MonoBehaviour
         Debug.Log($"{gameObject.name} Scary готов!");
     }
 
+    [Obsolete("Obsolete")]
     void Update()
     {
         if (!_fish.isAggressive) return;

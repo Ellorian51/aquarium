@@ -32,7 +32,7 @@ public class FishMovement : MonoBehaviour
     private Fish _fish;
     private AquariumController _aquarium;
     private MoveToPointBehavior _mtp;
-    private Vector3 prevPos;  // 🔥 для velocity поворота
+    private Vector3 _prevPos;  // 🔥 для velocity поворота
 
     void Start()
     {
@@ -44,12 +44,12 @@ public class FishMovement : MonoBehaviour
 
         _direction = startDirection != 0 ? startDirection : (Random.value > 0.5f ? 1f : -1f);
         _yOffsetPhase = yOffsetSeed + Random.Range(0f, Mathf.PI * 2f);
-        prevPos = transform.position;
+        _prevPos = transform.position;
     }
 
     void Update()
     {
-        prevPos = transform.position;  // 🔥 для LateUpdate velocity
+        _prevPos = transform.position;  // 🔥 для LateUpdate velocity
         
         // ✅ КОРМЕЖКА ИМЕЕТ ПРИОРИТЕТ — FishMovement пропускает полностью!
         if (_mtp != null && _mtp.isMoving) 
@@ -116,7 +116,7 @@ public class FishMovement : MonoBehaviour
     // 🔥 ПОВОРОТ ПО НАСТОЯЩЕМУ ДВИЖЕНИЮ (velocity) — игнор _direction багов!
     void LateUpdate()
     {
-        Vector3 velocity = (transform.position - prevPos) / Time.deltaTime;
+        Vector3 velocity = (transform.position - _prevPos) / Time.deltaTime;
         if (Mathf.Abs(velocity.x) > 0.05f)
         {
             float moveDir = Mathf.Sign(velocity.x);

@@ -43,7 +43,7 @@ public class AquariumController : MonoBehaviour
         MoveToPointBehavior mtp = fishObj.GetComponent<MoveToPointBehavior>();
         if (mtp != null && plants != null && plants.Length > 0)
         {
-            Plant targetPlant = null;
+            Plant targetPlant;
             
             // ✅ ПРИОРИТЕТ #1: любимое растение по ID
             if (!string.IsNullOrEmpty(fish.favoritePlantID))

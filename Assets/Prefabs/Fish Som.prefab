@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 387146017040779784}
   - component: {fileID: -3495592589719757275}
   - component: {fileID: -6577462633676196313}
+  - component: {fileID: 3558052073882147157}
   m_Layer: 0
   m_Name: Fish Som
   m_TagString: Untagged
@@ -108,7 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fish
   bottomDweller: 1
-  isAggressive: 0
+  isAggressive: 1
   favoritePlantID: Plant2
   aquarium: {fileID: 0}
 --- !u!114 &387146017040779784
@@ -123,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ea7dff9f584074e9f2c036e7eff7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishMovement
-  swimSpeed: 1
+  swimSpeed: 0.5
   startDirection: 1
   yOffsetSeed: 4
   basicMovement: 0
@@ -150,8 +151,8 @@ MonoBehaviour:
   speed: 2.5
   feedingRadius: 0.2
   moveInterval: 16
-  stayDurationMin: 5
-  stayDurationMax: 6
+  stayDurationMin: 10
+  stayDurationMax: 10
 --- !u!58 &-6577462633676196313
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -188,3 +189,17 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &3558052073882147157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6392574676814734785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cf549cb11a4e9447a982ae964207d5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScaryMove
+  detectRadius: 1.02
+  fleeCooldown: 1
