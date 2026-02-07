@@ -7,8 +7,8 @@ public class ScaryMove : MonoBehaviour
     public float detectRadius = 1.5f;
     
     [Header("Логика")]
-    [Range(0.1f, 2f)]
-    public float fleeCooldown = 0.5f;
+    [Range(1f, 5f)]  // 🔥 УВЕЛИЧИЛ МИНИМУМ
+    public float fleeCooldown = 2f;  // было 0.5f — реже пугает!
 
     private Fish _fish;
     private float _lastScareTime;
@@ -21,13 +21,10 @@ public class ScaryMove : MonoBehaviour
 
     void Update()
     {
-        // Только агро рыбы пугают
         if (!_fish.isAggressive) return;
         
-        // Cooldown между пугами
         if (Time.time - _lastScareTime < fleeCooldown) return;
 
-        // Ищем жертв в радиусе
         Collider2D[] nearby = new Collider2D[10];
         int count = Physics2D.OverlapCircleNonAlloc(transform.position, detectRadius, nearby);
         for (int i = 0; i < count; i++)
@@ -35,19 +32,19 @@ public class ScaryMove : MonoBehaviour
             Fish otherFish = nearby[i].GetComponent<Fish>();
             if (otherFish == null || otherFish.gameObject == gameObject) continue;
 
-            // ✅ ПУГАЕМ ДРУГУЮ РЫБУ!
+            // 🔥 ЛОГ ПЕРЕД Flee
+            MoveToPointBehavior otherMtp = nearby[i].GetComponent<MoveToPointBehavior>();
+            Debug.Log($"🦈 {gameObject.name} пугает {nearby[i].name}, mtp.isMoving={otherMtp?.isMoving}");
+
             FishMovement otherMovement = nearby[i].GetComponent<FishMovement>();
             if (otherMovement != null)
             {
-                // ЖЕРТВА убегает ОТ НАС (агрессора)
                 Vector2 victimFleeDir = (nearby[i].transform.position - transform.position).normalized;
                 otherMovement.FleeFromFish(Mathf.Sign(victimFleeDir.x));
-                
-                Debug.Log($"{gameObject.name} ПУГАЕТ {nearby[i].name}!");
             }
             
             _lastScareTime = Time.time;
-            return;  // пугаем ближайшую
+            return;
         }
     }
 

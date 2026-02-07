@@ -9,8 +9,8 @@ public class Fish : MonoBehaviour
     public bool bottomDweller;  // донная или нет
     public bool isAggressive;   // ✅ АГРЕССИВНАЯ!
 
-    [Header("Кормежка")]
-    public Plant favoritePlant; // своё растение (опционально)
+    [Header("🆔 Кормежка")]
+    [SerializeField] public string favoritePlantID = "";  // "Plant2" для сома!
 
     [HideInInspector]
     public AquariumController aquarium;

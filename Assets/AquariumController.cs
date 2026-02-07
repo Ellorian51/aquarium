@@ -1,5 +1,6 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
+using System.Linq;  // для Array.Find
 
 /// <summary>
 /// Контроллер аквариума: создаёт рыбу, управляет границами.
@@ -16,7 +17,7 @@ public class AquariumController : MonoBehaviour
     public GameObject[] fishPrefabs;
 
     [Header("Растения для кормежки")]
-    public Plant[] plants;  // перетаскивай все Plant сюда
+    public Plant[] plants;  // перетаскивай все Plant ИЗ HIERARCHY сюда
 
     /// Создаёт новую рыбу
     public void AddFish()
@@ -38,12 +39,38 @@ public class AquariumController : MonoBehaviour
         Fish fish = fishObj.GetComponent<Fish>();
         if (fish != null) fish.aquarium = this;
 
-        // Назначаем Plant для MoveToPointBehavior
+        // 🔥 ID СИСТЕМА — Назначаем Plant для MoveToPointBehavior
         MoveToPointBehavior mtp = fishObj.GetComponent<MoveToPointBehavior>();
-        if (mtp != null && plants.Length > 0)
+        if (mtp != null && plants != null && plants.Length > 0)
         {
-            int plantIdx = Random.Range(0, plants.Length);
-            mtp.plant = plants[plantIdx];
+            Plant targetPlant = null;
+            
+            // ✅ ПРИОРИТЕТ #1: любимое растение по ID
+            if (!string.IsNullOrEmpty(fish.favoritePlantID))
+            {
+                targetPlant = plants.FirstOrDefault(p => p.plantID == fish.favoritePlantID);
+                if (targetPlant != null)
+                {
+                    mtp.plant = targetPlant;
+                    Debug.Log($"🐟 {fishObj.name} → ЛЮБИМОЕ {targetPlant.plantID}");
+                }
+                else
+                {
+                    Debug.LogWarning($"🐟 {fishObj.name} НЕ НАЙДЕН PLANT ID '{fish.favoritePlantID}'!");
+                }
+            }
+            // ✅ ПРИОРИТЕТ #2: рандом из массива plants
+            else
+            {
+                int plantIdx = Random.Range(0, plants.Length);
+                targetPlant = plants[plantIdx];
+                mtp.plant = targetPlant;
+                Debug.Log($"🐟 {fishObj.name} → РАНДОМ {targetPlant.plantID} (#{plantIdx})");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"🐟 {fishObj.name} нет MoveToPointBehavior или plants[] пуст!");
         }
 
         // Настройка FishMovement

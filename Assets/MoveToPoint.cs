@@ -1,4 +1,5 @@
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MoveToPointBehavior : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class MoveToPointBehavior : MonoBehaviour
     public float stayDurationMin = 3f;
     public float stayDurationMax = 5f;
 
+    private AquariumController _aquarium;
     private Transform _targetPoint;
     private bool _moving;
     private float _stayTimer;
@@ -19,7 +21,9 @@ public class MoveToPointBehavior : MonoBehaviour
 
     void Start()
     {
+        _aquarium = GetComponentInParent<AquariumController>();
         _timer = moveInterval;
+        Debug.Log($"🐠 {gameObject.name} START: plant={plant?.plantID ?? "NULL"}");
     }
 
     void Update()
@@ -37,7 +41,6 @@ public class MoveToPointBehavior : MonoBehaviour
             }
         }
 
-        // ✅ Стоим и едим
         if (_stayTimer > 0f)
         {
             _stayTimer -= Time.deltaTime;
@@ -48,7 +51,7 @@ public class MoveToPointBehavior : MonoBehaviour
             return;
         }
 
-        // ✅ Плывём к растению
+        // ✅ ПЛЫВЁМ — ТОЛЬКО position!
         if (_moving && _targetPoint != null)
         {
             Vector3 dir = (_targetPoint.position - transform.position);
@@ -57,20 +60,19 @@ public class MoveToPointBehavior : MonoBehaviour
             if (distance > 0.1f)
             {
                 dir = dir.normalized;
-
-                // Поворот
-                Vector3 scale = transform.localScale;
-                scale.x = Mathf.Abs(scale.x) * (dir.x > 0 ? 1f : -1f);
-                transform.localScale = scale;
-
-                // Движение
-                transform.position += dir * (speed * Time.deltaTime);
+                // ✅ УДАЛЁН поворот scale.x — FishMovement сам!
+                
+                // Clamp в аквариум
+                Vector3 newPos = transform.position + dir * (speed * Time.deltaTime);
+                newPos.x = Mathf.Clamp(newPos.x, _aquarium.leftLimit + 0.5f, _aquarium.rightLimit - 0.5f);
+                newPos.y = Mathf.Clamp(newPos.y, _aquarium.bottomLimit + 0.5f, _aquarium.topLimit - 0.5f);
+                transform.position = newPos;
             }
             else
             {
-                // Доплыли = начинаем есть
                 StopMove();
                 _stayTimer = Random.Range(stayDurationMin, stayDurationMax);
+                Debug.Log($"🐠 {gameObject.name} ЕСТ!");
             }
         }
     }
@@ -87,7 +89,13 @@ public class MoveToPointBehavior : MonoBehaviour
         );
 
         GameObject tempTarget = new GameObject("TempTarget");
-        tempTarget.transform.position = point.position + offset;
+        Vector3 finalPos = point.position + offset;
+        
+        // ✅ Clamp в аквариум
+        finalPos.x = Mathf.Clamp(finalPos.x, _aquarium.leftLimit + 0.5f, _aquarium.rightLimit - 0.5f);
+        finalPos.y = Mathf.Clamp(finalPos.y, _aquarium.bottomLimit + 0.5f, _aquarium.topLimit - 0.5f);
+        
+        tempTarget.transform.position = finalPos;
         tempTarget.transform.parent = transform.parent;
 
         StartMove(tempTarget.transform);
@@ -97,7 +105,7 @@ public class MoveToPointBehavior : MonoBehaviour
     {
         _targetPoint = point;
         _moving = true;
-        Debug.Log($"{gameObject.name} плывёт кормиться!");
+        Debug.Log($"🐠 {gameObject.name} плывёт к {plant.plantID}!");
     }
 
     void StopMove()
@@ -108,6 +116,6 @@ public class MoveToPointBehavior : MonoBehaviour
             _targetPoint = null;
         }
         _moving = false;
-        Debug.Log($"{gameObject.name} доела и уплывает!");
+        Debug.Log($"🐠 {gameObject.name} доела {plant.plantID}!");
     }
 }
