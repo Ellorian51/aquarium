@@ -128,7 +128,7 @@ MonoBehaviour:
   pauseDurationMin: 0.3
   pauseDurationMax: 1
   directionChangeChance: 0.005
-  yWobbleAmount: 0.2
+  yWobbleAmount: 0.26
 --- !u!114 &-3495592589719757275
 MonoBehaviour:
   m_ObjectHideFlags: 0

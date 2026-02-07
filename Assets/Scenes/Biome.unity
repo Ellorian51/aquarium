@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 600, y: 390}
+  m_AnchoredPosition: {x: 850, y: 500}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &39152104
@@ -533,8 +533,8 @@ Transform:
   m_GameObject: {fileID: 478466146}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: -1.1, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalPosition: {x: -5, y: -4.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1792315672}
@@ -584,9 +584,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1402931155
-  m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingLayerID: -1565547907
+  m_SortingLayer: 3
+  m_SortingOrder: 50
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 76fad76cc86834b58b92ed4224bb2c71, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -850,7 +850,7 @@ Transform:
   m_GameObject: {fileID: 1116823760}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.1, z: 0}
+  m_LocalPosition: {x: -7, y: -4.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -901,9 +901,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1402931155
-  m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingLayerID: -1565547907
+  m_SortingLayer: 3
+  m_SortingOrder: 50
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: d7259ce72dbaa48bd97103f51480adff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5866,19 +5866,19 @@ PrefabInstance:
       objectReference: {fileID: 899295239}
     - target: {fileID: 7566357589098687373, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.037
+      value: -0.128
       objectReference: {fileID: 0}
     - target: {fileID: 7566357589098687373, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.256
+      value: 0.27
       objectReference: {fileID: 0}
     - target: {fileID: 8726321682066185865, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8726321682066185865, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.37069
+      value: -4.16
       objectReference: {fileID: 0}
     - target: {fileID: 8726321682066185865, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5890,15 +5890,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8726321682066185865, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8726321682066185865, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8726321682066185865, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8726321682066185865, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10823,7 +10823,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7747261447438941254, guid: 1857b0580dee2114b96bf4af5987246f, type: 3}
+  m_Sprite: {fileID: -1355270939746514160, guid: ddb413ccfa7eb794b83f817222db15d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -10848,8 +10848,8 @@ Transform:
   m_Children:
   - {fileID: 267168931}
   - {fileID: 1116823761}
-  - {fileID: 2052350085}
   - {fileID: 478466147}
+  - {fileID: 2052350085}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1792315673
@@ -10864,8 +10864,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 221798804b72f1b49bb1b37c382e34b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AquariumController
-  leftLimit: -5
-  rightLimit: 5
+  leftLimit: -6
+  rightLimit: 6
   bottomLimit: -3
   topLimit: 3
   fishPrefabs:
@@ -10912,7 +10912,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 13.44, y: 7.68}
+    oldSize: {x: 19.2, y: 10.8}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

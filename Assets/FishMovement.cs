@@ -38,10 +38,9 @@ public class FishMovement : MonoBehaviour
 
     void Update()
     {
-        // ✅ КЛЮЧЕВОЙ ФИКС: НЕ плаваем пока _mtp.isMoving!
         if (_mtp != null && _mtp.isMoving) return;  
         
-        if (_aquarium == null) return;
+        if (_aquarium == null) return;  
 
         Vector3 newPos = transform.position;
 
@@ -80,7 +79,7 @@ public class FishMovement : MonoBehaviour
 
         if (_fish.bottomDweller)
         {
-            yOffset = _aquarium.bottomLimit + 0.9f +
+            yOffset = _aquarium.bottomLimit + 0.2f +
                 Mathf.Sin(Time.time * 1f + _yOffsetPhase) * 0.1f;
         }
         else if (basicMovement)
