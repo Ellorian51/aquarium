@@ -19,13 +19,12 @@ public class FishMovement : MonoBehaviour
 
     private float _direction;
     private float _yOffsetPhase;
-
     private bool _isPaused;
     private float _pauseTimer;
 
     private Fish _fish;
     private AquariumController _aquarium;
-    private MoveToPointBehavior _mtp;
+    private MoveToPointBehavior _mtp;  // ✅ Используется ниже!
 
     void Start()
     {
@@ -39,9 +38,9 @@ public class FishMovement : MonoBehaviour
 
     void Update()
     {
-        // 🔴 если сейчас работает MoveToPoint — не трогаем позицию
-        if (_mtp != null && _mtp.enabled && _mtp.isMoving) return;
-
+        // ✅ КЛЮЧЕВОЙ ФИКС: НЕ плаваем пока _mtp.isMoving!
+        if (_mtp != null && _mtp.isMoving) return;  
+        
         if (_aquarium == null) return;
 
         Vector3 newPos = transform.position;
@@ -82,7 +81,7 @@ public class FishMovement : MonoBehaviour
         if (_fish.bottomDweller)
         {
             yOffset = _aquarium.bottomLimit + 0.9f +
-                      Mathf.Sin(Time.time * 1f + _yOffsetPhase) * 0.1f;
+                Mathf.Sin(Time.time * 1f + _yOffsetPhase) * 0.1f;
         }
         else if (basicMovement)
         {

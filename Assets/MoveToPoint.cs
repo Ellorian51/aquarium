@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class MoveToPointBehavior : MonoBehaviour
 {
+    [Header("Настройки кормежки")]
     public Plant plant;
-
     public float speed = 1f;
     public float feedingRadius = 0.2f;
     public float moveInterval = 5f;
@@ -11,55 +11,67 @@ public class MoveToPointBehavior : MonoBehaviour
     public float stayDurationMax = 5f;
 
     private Transform _targetPoint;
-    bool _moving;
+    private bool _moving;
     private float _stayTimer;
     private float _timer;
-    private FishMovement _fishMovement;
 
     public bool isMoving => _moving;
 
     void Start()
     {
         _timer = moveInterval;
-        _fishMovement = GetComponent<FishMovement>();
     }
 
     void Update()
     {
         if (plant == null) return;
 
-        if (_targetPoint == null && !_moving && _timer <= 0f)
+        // Таймер кормежки
+        if (!_moving && _stayTimer <= 0f)
         {
-            ChooseTargetPoint();
+            _timer -= Time.deltaTime;
+            if (_timer <= 0f)
+            {
+                _timer = moveInterval;
+                ChooseTargetPoint();
+            }
         }
 
+        // ✅ Стоим и едим
+        if (_stayTimer > 0f)
+        {
+            _stayTimer -= Time.deltaTime;
+            if (_stayTimer <= 0f)
+            {
+                StopMove();
+            }
+            return;
+        }
+
+        // ✅ Плывём к растению
         if (_moving && _targetPoint != null)
         {
-            if (_fishMovement != null) _fishMovement.enabled = false;
+            Vector3 dir = (_targetPoint.position - transform.position);
+            float distance = dir.magnitude;
 
-            Vector3 dir = _targetPoint.position - transform.position;
-
-            if (dir.magnitude > 0.05f)
+            if (distance > 0.1f)
             {
-                transform.position += dir.normalized * (speed * Time.deltaTime);
+                dir = dir.normalized;
+
+                // Поворот
+                Vector3 scale = transform.localScale;
+                scale.x = Mathf.Abs(scale.x) * (dir.x > 0 ? 1f : -1f);
+                transform.localScale = scale;
+
+                // Движение
+                transform.position += dir * (speed * Time.deltaTime);
             }
             else
             {
+                // Доплыли = начинаем есть
                 StopMove();
                 _stayTimer = Random.Range(stayDurationMin, stayDurationMax);
             }
-        }
-        else if (_stayTimer > 0f)
-        {
-            _stayTimer -= Time.deltaTime;
-        }
-        else
-        {
-            if (_fishMovement != null) _fishMovement.enabled = true;
-
-            _timer -= Time.deltaTime;
-            if (_timer <= 0f)
-                _timer = moveInterval;
         }
     }
 
@@ -76,6 +88,7 @@ public class MoveToPointBehavior : MonoBehaviour
 
         GameObject tempTarget = new GameObject("TempTarget");
         tempTarget.transform.position = point.position + offset;
+        tempTarget.transform.parent = transform.parent;
 
         StartMove(tempTarget.transform);
     }
@@ -84,11 +97,17 @@ public class MoveToPointBehavior : MonoBehaviour
     {
         _targetPoint = point;
         _moving = true;
-        Debug.Log("Иду к растению");
+        Debug.Log($"{gameObject.name} плывёт кормиться!");
     }
 
     void StopMove()
     {
+        if (_targetPoint != null)
+        {
+            Destroy(_targetPoint.gameObject);
+            _targetPoint = null;
+        }
         _moving = false;
+        Debug.Log($"{gameObject.name} доела и уплывает!");
     }
 }

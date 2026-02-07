@@ -142,8 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToPointBehavior
   plant: {fileID: 0}
-  speed: 20
+  speed: 3
   feedingRadius: 1
-  moveInterval: 1
-  stayDurationMin: 9
-  stayDurationMax: 10
+  moveInterval: 10
+  stayDurationMin: 0.3
+  stayDurationMax: 1

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,8 +15,10 @@ public class AquariumController : MonoBehaviour
     [Header("Пресеты рыб")]
     public GameObject[] fishPrefabs;
 
+    [Header("Растения для кормежки")]
+    public Plant[] plants;  // перетаскивай все Plant сюда
+
     /// Создаёт новую рыбу
-    [Obsolete("Obsolete")]
     public void AddFish()
     {
         if (fishPrefabs.Length == 0) return;
@@ -26,7 +27,7 @@ public class AquariumController : MonoBehaviour
         GameObject prefab = fishPrefabs[idx];
 
         bool isBottom = prefab.GetComponent<Fish>().bottomDweller;
-        float x = Random.Range(leftLimit + 0.5f, rightLimit - 0.5f);
+        float x = Random.Range(leftLimit + 0.5f, rightLimit - 0.7f);
         float y = isBottom
             ? Random.Range(bottomLimit + 0.5f, bottomLimit + 0.8f)
             : Random.Range(bottomLimit + 0.7f, topLimit - 0.2f);
@@ -39,11 +40,10 @@ public class AquariumController : MonoBehaviour
 
         // Назначаем Plant для MoveToPointBehavior
         MoveToPointBehavior mtp = fishObj.GetComponent<MoveToPointBehavior>();
-        if (mtp != null)
+        if (mtp != null && plants.Length > 0)
         {
-            Plant plant = FindObjectOfType<Plant>(); // выбираем любое растение из сцены
-            if (plant != null)
-                mtp.plant = plant;
+            int plantIdx = Random.Range(0, plants.Length);
+            mtp.plant = plants[plantIdx];
         }
 
         // Настройка FishMovement

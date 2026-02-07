@@ -359,6 +359,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8726321682066185865, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
   m_PrefabInstance: {fileID: 1520104836}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &267168934 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
+  m_PrefabInstance: {fileID: 1520104836}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28565125da335cc49bbb35a08bd84928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Plant
 --- !u!1 &374896065
 GameObject:
   m_ObjectHideFlags: 0
@@ -5833,6 +5844,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plant1
       objectReference: {fileID: 0}
+    - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
+      propertyPath: feedingPoints.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
+      propertyPath: 'feedingPoints.Array.data[0]'
+      value: 
+      objectReference: {fileID: 899295239}
+    - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
+      propertyPath: 'feedingPoints.Array.data[1]'
+      value: 
+      objectReference: {fileID: 267168931}
+    - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
+      propertyPath: 'feedingPoints.Array.data[2]'
+      value: 
+      objectReference: {fileID: 267168931}
     - target: {fileID: 4877142315524799857, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: 'feedingPoints.Array.data[0]'
       value: 
@@ -10819,10 +10846,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 267168931}
   - {fileID: 1116823761}
   - {fileID: 2052350085}
   - {fileID: 478466147}
-  - {fileID: 267168931}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1792315673
@@ -10845,6 +10872,8 @@ MonoBehaviour:
   - {fileID: 6392574676814734785, guid: 80188480d84cf9e49ba0e255892d84df, type: 3}
   - {fileID: 6392574676814734785, guid: 555c49f856494f34abdb8c8d8db2ee8f, type: 3}
   - {fileID: 6392574676814734785, guid: 2215915a3548c224b8d8a2343b6df92b, type: 3}
+  plants:
+  - {fileID: 267168934}
 --- !u!61 &1792315674
 BoxCollider2D:
   m_ObjectHideFlags: 0
