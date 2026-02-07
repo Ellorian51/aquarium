@@ -7,7 +7,7 @@ public class FishMovement : MonoBehaviour
     public int startDirection;
     public float yOffsetSeed;
 
-    [Header("Тип поведения")]
+    [Header("Loops")]
     public bool basicMovement;
 
     [Header("Живое поведение для BasicMovement")]
@@ -79,7 +79,7 @@ public class FishMovement : MonoBehaviour
 
         if (_fish.bottomDweller)
         {
-            yOffset = _aquarium.bottomLimit + 0.2f +
+            yOffset = _aquarium.bottomLimit + -1f +
                 Mathf.Sin(Time.time * 1f + _yOffsetPhase) * 0.1f;
         }
         else if (basicMovement)

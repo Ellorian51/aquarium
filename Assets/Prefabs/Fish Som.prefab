@@ -122,13 +122,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FishMovement
   swimSpeed: 1
   startDirection: 1
-  yOffsetSeed: 0
+  yOffsetSeed: 4
   basicMovement: 0
   pauseChance: 0.2
   pauseDurationMin: 0.3
   pauseDurationMax: 1
   directionChangeChance: 0.005
-  yWobbleAmount: 0.26
+  yWobbleAmount: 0.19
 --- !u!114 &-3495592589719757275
 MonoBehaviour:
   m_ObjectHideFlags: 0
