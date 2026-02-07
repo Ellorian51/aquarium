@@ -7,7 +7,7 @@ using UnityEngine;
 public class Fish : MonoBehaviour
 {
     [Header("ВИД РЫБЫ")]
-    public bool bottomDweller = false;   // донная или нет
+    public bool bottomDweller;   // донная или нет
 
     [HideInInspector]
     public AquariumController aquarium;

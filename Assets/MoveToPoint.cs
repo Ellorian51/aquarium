@@ -1,14 +1,9 @@
 using UnityEngine;
 
-/// <summary>
-/// Рыба подплывает к точке растения, делает паузу, потом возвращается к базовому движению.
-/// </summary>
 public class MoveToPointBehavior : MonoBehaviour
 {
-    [Header("Ссылка на растение (устанавливается динамически)")]
     public Plant plant;
 
-    [Header("Настройки движения")]
     public float speed = 1f;
     public float feedingRadius = 0.2f;
     public float moveInterval = 5f;
@@ -16,10 +11,12 @@ public class MoveToPointBehavior : MonoBehaviour
     public float stayDurationMax = 5f;
 
     private Transform _targetPoint;
-    private bool _moving;
+    bool _moving;
     private float _stayTimer;
     private float _timer;
     private FishMovement _fishMovement;
+
+    public bool isMoving => _moving;
 
     void Start()
     {
@@ -29,13 +26,11 @@ public class MoveToPointBehavior : MonoBehaviour
 
     void Update()
     {
-        if (plant == null) return; // если растение не задано, не двигаемся
+        if (plant == null) return;
 
-        // Выбираем новую точку, если нет цели
         if (_targetPoint == null && !_moving && _timer <= 0f)
         {
             ChooseTargetPoint();
-            _moving = true;
         }
 
         if (_moving && _targetPoint != null)
@@ -43,11 +38,14 @@ public class MoveToPointBehavior : MonoBehaviour
             if (_fishMovement != null) _fishMovement.enabled = false;
 
             Vector3 dir = _targetPoint.position - transform.position;
+
             if (dir.magnitude > 0.05f)
-                transform.position += dir.normalized * speed * Time.deltaTime;
+            {
+                transform.position += dir.normalized * (speed * Time.deltaTime);
+            }
             else
             {
-                _moving = false;
+                StopMove();
                 _stayTimer = Random.Range(stayDurationMin, stayDurationMax);
             }
         }
@@ -58,8 +56,10 @@ public class MoveToPointBehavior : MonoBehaviour
         else
         {
             if (_fishMovement != null) _fishMovement.enabled = true;
+
             _timer -= Time.deltaTime;
-            if (_timer <= 0f) _timer = moveInterval;
+            if (_timer <= 0f)
+                _timer = moveInterval;
         }
     }
 
@@ -76,6 +76,19 @@ public class MoveToPointBehavior : MonoBehaviour
 
         GameObject tempTarget = new GameObject("TempTarget");
         tempTarget.transform.position = point.position + offset;
-        _targetPoint = tempTarget.transform;
+
+        StartMove(tempTarget.transform);
+    }
+
+    void StartMove(Transform point)
+    {
+        _targetPoint = point;
+        _moving = true;
+        Debug.Log("Иду к растению");
+    }
+
+    void StopMove()
+    {
+        _moving = false;
     }
 }
