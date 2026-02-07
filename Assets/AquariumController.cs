@@ -7,10 +7,10 @@ using Random = UnityEngine.Random;
 public class AquariumController : MonoBehaviour
 {
     [Header("Границы аквариума")]
-    public float leftLimit = -2.2f;
-    public float rightLimit = 2.2f;
-    public float bottomLimit = -1.3f;
-    public float topLimit = 1.3f;
+    public float leftLimit = -7f;
+    public float rightLimit = 7f;
+    public float bottomLimit = -4.5f;
+    public float topLimit = 4f;
 
     [Header("Пресеты рыб")]
     public GameObject[] fishPrefabs;
