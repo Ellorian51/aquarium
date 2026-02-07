@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 9047919098776720677}
   - component: {fileID: 1340538064853767933}
   - component: {fileID: 387146017040779784}
+  - component: {fileID: 6082326187590262783}
+  - component: {fileID: 3166572301980893705}
   m_Layer: 0
   m_Name: Fish Craft
   m_TagString: Untagged
@@ -29,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -83,12 +85,12 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 3466652502813292153, guid: 5b9009d92ab09f4458297b0abcbffec8, type: 3}
+  m_Sprite: {fileID: -3951517328453871476, guid: 77ba021d9e7d01e44a7efa0b1255a714, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.59, y: 0.26}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -105,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdcea4f52a69b7d4192c559182e700d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fish
-  bottomDweller: 1
+  bottomDweller: 0
   aquarium: {fileID: 0}
 --- !u!114 &387146017040779784
 MonoBehaviour:
@@ -119,6 +121,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ea7dff9f584074e9f2c036e7eff7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishMovement
-  swimSpeed: 1
-  startDirection: 1
-  yOffsetSeed: 0
+  swimSpeed: 1.2
+  startDirection: 3
+  yOffsetSeed: 1
+  basicMovement: 1
+  pauseChance: 0.009
+  pauseDurationMin: 0.29
+  pauseDurationMax: 0.45
+  directionChangeChance: 0.0026
+  yWobbleAmount: 0.146
+--- !u!114 &6082326187590262783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6392574676814734785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6651fe5f3ff14545ad02f53f81ed0fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoveToPointBehavior
+  plant: {fileID: 4877142315524799857, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
+  speed: 5
+  feedingRadius: 0.2
+  moveInterval: 1
+  stayDurationMin: 3
+  stayDurationMax: 5
+--- !u!114 &3166572301980893705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6392574676814734785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28565125da335cc49bbb35a08bd84928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Plant
+  feedingPoints:
+  - {fileID: 0}

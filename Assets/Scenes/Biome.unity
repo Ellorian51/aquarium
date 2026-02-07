@@ -10764,6 +10764,7 @@ MonoBehaviour:
   fishPrefabs:
   - {fileID: 6392574676814734785, guid: 80188480d84cf9e49ba0e255892d84df, type: 3}
   - {fileID: 6392574676814734785, guid: 555c49f856494f34abdb8c8d8db2ee8f, type: 3}
+  - {fileID: 6392574676814734785, guid: 2215915a3548c224b8d8a2343b6df92b, type: 3}
 --- !u!61 &1792315674
 BoxCollider2D:
   m_ObjectHideFlags: 0

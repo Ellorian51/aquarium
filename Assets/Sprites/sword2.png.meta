@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 84efd7b3a830afd4a9a041872b9d8fd1
+guid: 77ba021d9e7d01e44a7efa0b1255a714
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4187048806764453218
-    second: Aquarium2_0
+      213: -3951517328453871476
+    second: sword2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Aquarium2_0
+      name: sword2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 724
+        width: 59
+        height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 26d1b60b4b26b1a30800000000000000
-      internalID: 4187048806764453218
+      spriteID: c88d4b10de36929c0800000000000000
+      internalID: -3951517328453871476
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Aquarium2_0: 4187048806764453218
+      sword2_0: -3951517328453871476
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
