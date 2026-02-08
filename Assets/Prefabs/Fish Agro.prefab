@@ -150,8 +150,8 @@ MonoBehaviour:
   speed: 1.6
   feedingRadius: 0.7
   moveInterval: 9
-  stayDurationMin: 3
-  stayDurationMax: 5
+  stayDurationMin: 2
+  stayDurationMax: 4
 --- !u!114 &4778168204412756803
 MonoBehaviour:
   m_ObjectHideFlags: 0

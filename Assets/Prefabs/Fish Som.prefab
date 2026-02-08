@@ -151,8 +151,8 @@ MonoBehaviour:
   speed: 2.5
   feedingRadius: 0.2
   moveInterval: 16
-  stayDurationMin: 10
-  stayDurationMax: 10
+  stayDurationMin: 5
+  stayDurationMax: 6
 --- !u!58 &-6577462633676196313
 CircleCollider2D:
   m_ObjectHideFlags: 0
