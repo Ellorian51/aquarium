@@ -32,10 +32,10 @@ public class ScaryMove : MonoBehaviour
     {
         if (!_fish.isAggressive) return;
     
-        // 🔥 ФИКС: Агро НЕ пугают, пока САМИ едят!
+        
         MoveToPointBehavior ownMtp = GetComponent<MoveToPointBehavior>();
         if (ownMtp != null && ownMtp.isMoving) return;
-    
+        if (Time.time - _lastScaredTime < scaredCooldown)
         // ✅ НОВОЕ: НЕ пугает, если сам напуган недавно
         if (Time.time - _lastScaredTime < scaredCooldown) return;
     

@@ -1,8 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Сущность рыбы — хранит тип и связь с аквариумом.
-/// </summary>
 public class Fish : MonoBehaviour
 {
     [Header("ВИД РЫБЫ")]

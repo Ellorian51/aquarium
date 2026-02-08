@@ -161,16 +161,14 @@ public class FishMovement : MonoBehaviour
 
     public void FleeFromFish(float fleeDirection)
     {
-        // 🔥 ФИКС ДЛЯ ДОННЫХ: всегда flee, даже если mtp!
-        // if (_mtp != null && _mtp.isMoving) return;  ← ЗАКОММЕНТИРОВАЙ или удали
+        // if (_mtp != null && _mtp.isMoving) return;  ← ЗАКОММЕНТИРУЙ!
     
         ScaryMove scary = GetComponent<ScaryMove>();
-        if (scary != null)
-            scary.OnScared();
+        if (scary != null) scary.OnScared();
 
         _direction = fleeDirection;
-        _fleeMultiplier = fleeSpeedMultiplier * (_fish.bottomDweller ? 1.5f : 1f);  // ✅ ДОННЫЕ БЫСТРЕЕ!
+        _fleeMultiplier = fleeSpeedMultiplier;
         _fleeTimer = Mathf.Min(fleeDuration, fleeDistance / swimSpeed);
-        Debug.Log($"{gameObject.name} УБЕГАЕТ {fleeDistance}m dir={fleeDirection} (bottom={_fish.bottomDweller})");
+        Debug.Log($"{gameObject.name} УБЕГАЕТ {fleeDistance}m dir={fleeDirection}");
     }
 }

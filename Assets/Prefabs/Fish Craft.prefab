@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -3951517328453871476, guid: 77ba021d9e7d01e44a7efa0b1255a714, type: 3}
+  m_Sprite: {fileID: 6493819174695262598, guid: 23002797aab6683489b604a7cd375b2e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -109,8 +109,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fish
   bottomDweller: 0
   isAggressive: 0
-  favoritePlantID: Plant1
+  favoritePlantID: Plant2
+  starveTime: 30
   aquarium: {fileID: 0}
+  lastEatTime: 0
+  isStarving: 0
 --- !u!114 &387146017040779784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,15 +134,15 @@ MonoBehaviour:
   pauseDurationMin: 0.29
   pauseDurationMax: 0.45
   directionChangeChance: 0.0026
-  yWobbleAmount: 0.146
+  yWobbleAmount: 0.2
   dwellerMovement: 0
   dwellerPauseChance: 0.02
   dwellerPauseDurationMin: 0.8
   dwellerPauseDurationMax: 2
   dwellerDirectionChangeChance: 0.002
   dwellerYWobbleAmount: 0.1
-  fleeSpeedMultiplier: 2.5
-  fleeDuration: 1
+  fleeSpeedMultiplier: 2.8
+  fleeDuration: 3
   fleeDistance: 5.18
 --- !u!114 &6082326187590262783
 MonoBehaviour:
@@ -156,8 +159,8 @@ MonoBehaviour:
   plant: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
   speed: 3
   feedingRadius: 1
-  moveInterval: 30
-  stayDurationMin: 1
+  moveInterval: 15
+  stayDurationMin: 0.3
   stayDurationMax: 2
 --- !u!58 &2539886645851737607
 CircleCollider2D:

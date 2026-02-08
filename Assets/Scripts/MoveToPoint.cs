@@ -36,7 +36,7 @@ public class MoveToPointBehavior : MonoBehaviour
             _stayTimer -= Time.deltaTime;
             if (_stayTimer <= 0f)
             {
-                Debug.Log($"🐠 {gameObject.name} НАЕЛАСЬ!");
+              
                 _stayTimer = 0f;
                 _moving = false;
     

@@ -111,7 +111,10 @@ MonoBehaviour:
   bottomDweller: 1
   isAggressive: 1
   favoritePlantID: Plant4, Plant3
+  starveTime: 120
   aquarium: {fileID: 0}
+  lastEatTime: 0
+  isStarving: 0
 --- !u!114 &387146017040779784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,6 +212,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScaryMove
   detectRadius: 0.62
-  attackChance: 0.0146
+  attackChance: 0.034
   fleeCooldown: 3.1
   scaredCooldown: 10
