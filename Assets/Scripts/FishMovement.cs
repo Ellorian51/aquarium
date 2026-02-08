@@ -17,9 +17,19 @@ public class FishMovement : MonoBehaviour
     [Range(0f, 0.05f)] public float directionChangeChance = 0.005f;
     [Range(0f, 1f)] public float yWobbleAmount = 0.2f;
 
+    [Header("Dweller Movements")]
+    public bool dwellerMovement;  // ✅ Новая галка!
+    [Range(0f, 0.2f)] public float dwellerPauseChance = 0.02f;
+    [Range(0.1f, 3f)] public float dwellerPauseDurationMin = 0.8f;
+    [Range(0.1f, 3f)] public float dwellerPauseDurationMax = 2.0f;
+    [Range(0f, 0.05f)] public float dwellerDirectionChangeChance = 0.002f;
+    [Range(0f, 1f)] public float dwellerYWobbleAmount = 0.1f;
+
     [Header("Побег")]
     [Range(1f, 5f)] public float fleeSpeedMultiplier = 2.5f;
     [Range(0.5f, 3f)] public float fleeDuration = 1f;
+    [Range(2f, 10f)] public float fleeDistance = 4f;
+    
 
     private float _direction;
     private float _yOffsetPhase;
@@ -32,7 +42,7 @@ public class FishMovement : MonoBehaviour
     private Fish _fish;
     private AquariumController _aquarium;
     private MoveToPointBehavior _mtp;
-    private Vector3 _prevPos;  // 🔥 для velocity поворота
+    private Vector3 _prevPos;
 
     void Start()
     {
@@ -49,21 +59,21 @@ public class FishMovement : MonoBehaviour
 
     void Update()
     {
-        _prevPos = transform.position;  // 🔥 для LateUpdate velocity
+        _prevPos = transform.position;
         
-        // ✅ КОРМЕЖКА ИМЕЕТ ПРИОРИТЕТ — FishMovement пропускает полностью!
-        if (_mtp != null && _mtp.isMoving) 
-            return;
+        // ✅ КОРМЕЖКА ИМЕЕТ ПРИОРИТЕТ
+        if (_mtp != null && _mtp.isMoving) return;
         
         if (_aquarium == null) return;  
 
         Vector3 newPos = transform.position;
 
-        // Паузы
-        if (basicMovement && !_isPaused && Random.value < pauseChance)
+        // 🔥 ПАУЗЫ — для любого режима
+        bool anyMovement = basicMovement || dwellerMovement;
+        if (anyMovement && !_isPaused && Random.value < GetPauseChance())
         {
             _isPaused = true;
-            _pauseTimer = Random.Range(pauseDurationMin, pauseDurationMax);
+            _pauseTimer = Random.Range(GetPauseDurationMin(), GetPauseDurationMax());
         }
         if (_isPaused)
         {
@@ -71,15 +81,14 @@ public class FishMovement : MonoBehaviour
             if (_pauseTimer <= 0f) _isPaused = false;
         }
 
-        // Смена направления
-        if (basicMovement && !_isPaused && Random.value < directionChangeChance)
+        // 🔥 СМЕНА НАПРАВЛЕНИЯ
+        if (anyMovement && !_isPaused && Random.value < GetDirectionChangeChance())
             _direction *= -1f;
 
-        // СКОРОСТЬ С Бустом!
+        // СКОРОСТЬ
         float baseSpeed = swimSpeed * Random.Range(0.8f, 1.2f);
         float currentSpeed = _isPaused ? 0f : baseSpeed;
         
-        // Побег!
         if (_fleeTimer > 0f)
         {
             currentSpeed *= _fleeMultiplier;
@@ -100,20 +109,16 @@ public class FishMovement : MonoBehaviour
             _direction = 1f;
         }
 
-        // Y движение
+        // 🔥 Y движение — выбор по режиму
+        float yWobble = dwellerMovement ? dwellerYWobbleAmount : yWobbleAmount;
         float yOffset = _fish.bottomDweller
             ? _aquarium.bottomLimit + 0.6f + Mathf.Sin(Time.time * 0.8f + _yOffsetPhase) * 0.3f
-            : basicMovement
-                ? Mathf.Lerp(transform.position.y, transform.position.y + Mathf.Sin(Time.time + _yOffsetPhase) * yWobbleAmount, 0.05f)
-                : Mathf.Clamp(Mathf.Sin(Time.time * 2f + _yOffsetPhase) * 0.5f, _aquarium.bottomLimit, _aquarium.topLimit);
+            : Mathf.Lerp(transform.position.y, transform.position.y + Mathf.Sin(Time.time + _yOffsetPhase) * yWobble, 0.05f);
 
         newPos.y = Mathf.Clamp(yOffset, _aquarium.bottomLimit, _aquarium.topLimit);
         transform.position = newPos;
-
-   
     }
 
-    // 🔥 ПОВОРОТ ПО НАСТОЯЩЕМУ ДВИЖЕНИЮ (velocity) — игнор _direction багов!
     void LateUpdate()
     {
         Vector3 velocity = (transform.position - _prevPos) / Time.deltaTime;
@@ -126,18 +131,42 @@ public class FishMovement : MonoBehaviour
         }
     }
 
-    // 🔥 ФИКС АГРО: игнор Flee во время кормежки
+    // 🔥 Get методы для режимов
+    float GetPauseChance()
+    {
+        if (dwellerMovement) return dwellerPauseChance;
+        return pauseChance;
+    }
+
+    float GetPauseDurationMin()
+    {
+        if (dwellerMovement) return dwellerPauseDurationMin;
+        return pauseDurationMin;
+    }
+
+    float GetPauseDurationMax()
+    {
+        if (dwellerMovement) return dwellerPauseDurationMax;
+        return pauseDurationMax;
+    }
+
+    float GetDirectionChangeChance()
+    {
+        if (dwellerMovement) return dwellerDirectionChangeChance;
+        return directionChangeChance;
+    }
+
     public void FleeFromFish(float fleeDirection)
     {
-        if (_mtp != null && _mtp.isMoving)
+        if (_mtp != null && _mtp.isMoving) 
         {
-            Debug.Log($"{gameObject.name} КОРМИТСЯ — Flee игнор от ScaryMove!");
+            Debug.Log($"{gameObject.name} ИГНОР flee — уже ЕСТ!");
             return;
         }
-        
+    
         _direction = fleeDirection;
         _fleeMultiplier = fleeSpeedMultiplier;
-        _fleeTimer = fleeDuration;
-        Debug.Log($"{gameObject.name} УБЕГАЕТ dir={fleeDirection} x{fleeSpeedMultiplier}!");
+        _fleeTimer = Mathf.Min(fleeDuration, fleeDistance / swimSpeed);  // ✅ ПО РАССТОЯНИЮ!
+        Debug.Log($"{gameObject.name} УБЕГАЕТ {fleeDistance}m dir={fleeDirection}");
     }
 }

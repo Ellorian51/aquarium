@@ -110,7 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fish
   bottomDweller: 1
   isAggressive: 1
-  favoritePlantID: Plant2
+  favoritePlantID: Plant3
   aquarium: {fileID: 0}
 --- !u!114 &387146017040779784
 MonoBehaviour:
@@ -124,16 +124,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ea7dff9f584074e9f2c036e7eff7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishMovement
-  swimSpeed: 0.5
+  swimSpeed: 0.8
   startDirection: 1
   yOffsetSeed: 4
   basicMovement: 0
-  pauseChance: 0.2
-  pauseDurationMin: 0.3
-  pauseDurationMax: 1
-  directionChangeChance: 0.0105
-  yWobbleAmount: 0.14
-  fleeSpeedMultiplier: 2.5
+  pauseChance: 0.031
+  pauseDurationMin: 0.44
+  pauseDurationMax: 0.92
+  directionChangeChance: 0.0092
+  yWobbleAmount: 0.33
+  dwellerMovement: 1
+  dwellerPauseChance: 0.02
+  dwellerPauseDurationMin: 0.8
+  dwellerPauseDurationMax: 1.85
+  dwellerDirectionChangeChance: 0.0087
+  dwellerYWobbleAmount: 0.1
+  fleeSpeedMultiplier: 2.98
   fleeDuration: 1
 --- !u!114 &-3495592589719757275
 MonoBehaviour:
@@ -149,10 +155,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveToPointBehavior
   plant: {fileID: 0}
   speed: 2.5
-  feedingRadius: 0.2
+  feedingRadius: 0.3
   moveInterval: 16
-  stayDurationMin: 5
-  stayDurationMax: 6
+  stayDurationMin: 1
+  stayDurationMax: 2
 --- !u!58 &-6577462633676196313
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -201,5 +207,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf549cb11a4e9447a982ae964207d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScaryMove
-  detectRadius: 1.02
-  fleeCooldown: 1
+  detectRadius: 0.62
+  fleeCooldown: 2.05

@@ -148,10 +148,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveToPointBehavior
   plant: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
   speed: 3
-  feedingRadius: 0.1
+  feedingRadius: 1
   moveInterval: 25
-  stayDurationMin: 2
-  stayDurationMax: 3
+  stayDurationMin: 1
+  stayDurationMax: 2
 --- !u!58 &-5782700575436088879
 CircleCollider2D:
   m_ObjectHideFlags: 0

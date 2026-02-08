@@ -132,6 +132,12 @@ MonoBehaviour:
   pauseDurationMax: 0.84
   directionChangeChance: 0.0012
   yWobbleAmount: 0.16
+  dwellerMovement: 0
+  dwellerPauseChance: 0.02
+  dwellerPauseDurationMin: 0.8
+  dwellerPauseDurationMax: 2
+  dwellerDirectionChangeChance: 0.002
+  dwellerYWobbleAmount: 0.1
   fleeSpeedMultiplier: 2.5
   fleeDuration: 1
 --- !u!114 &-3495592589719757275
@@ -148,10 +154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveToPointBehavior
   plant: {fileID: 0}
   speed: 1.6
-  feedingRadius: 0.7
+  feedingRadius: 1
   moveInterval: 9
-  stayDurationMin: 2
-  stayDurationMax: 4
+  stayDurationMin: 1
+  stayDurationMax: 3
 --- !u!114 &4778168204412756803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,5 +170,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf549cb11a4e9447a982ae964207d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RepelBehavior
-  detectRadius: 3
-  fleeCooldown: 1
+  detectRadius: 0.79
+  fleeCooldown: 2.05
