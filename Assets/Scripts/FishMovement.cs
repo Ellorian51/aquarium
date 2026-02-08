@@ -59,6 +59,9 @@ public class FishMovement : MonoBehaviour
 
     void Update()
     {
+        Fish fish = GetComponent<Fish>();
+        if (fish != null) fish.CheckStarvation();  
+        
         _prevPos = transform.position;
         
         // ✅ КОРМЕЖКА ИМЕЕТ ПРИОРИТЕТ

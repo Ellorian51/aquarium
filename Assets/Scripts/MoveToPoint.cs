@@ -1,10 +1,11 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 public class MoveToPointBehavior : MonoBehaviour
 {
     [Header("Настройки")]
-    public Plant plant;
+    public Plant plant;  // Игнорируем — теперь динамически!
     public float speed = 1f;
     public float feedingRadius = 0.2f;
     public float moveInterval = 5f;
@@ -27,7 +28,7 @@ public class MoveToPointBehavior : MonoBehaviour
 
     void Update()
     {
-        if (plant == null) return;
+        if (_aquarium == null || _aquarium.plants == null || _aquarium.plants.Length == 0) return;
 
         // 1. ПАУЗА (stayTimer)
         if (_stayTimer > 0f)
@@ -38,11 +39,15 @@ public class MoveToPointBehavior : MonoBehaviour
                 Debug.Log($"🐠 {gameObject.name} НАЕЛАСЬ!");
                 _stayTimer = 0f;
                 _moving = false;
+    
+                // ✅ СБРОС ГОЛОДА!
+                Fish fish = GetComponent<Fish>();
+                if (fish != null) fish.OnEaten();
             }
             return;
         }
 
-        // 2. Ждём интервал
+        // 2. Ждём интервал → НОВЫЙ РАНДОМ!
         if (!_moving)
         {
             _timer -= Time.deltaTime;
@@ -54,13 +59,12 @@ public class MoveToPointBehavior : MonoBehaviour
             return;
         }
 
-        // 3. ДВИЖЕНИЕ — ФИКС Зависания агро!
+        // 3. ДВИЖЕНИЕ
         if (_targetPoint != null)
         {
             Vector3 dir = (_targetPoint.position - transform.position);
             float dist = dir.magnitude;
             
-            // 🔥 ФИКС: 0.05f → 0.3f + ЛЕПИМ К ТОЧКЕ!
             if (dist > 0.3f)
             {
                 dir.Normalize();
@@ -73,8 +77,7 @@ public class MoveToPointBehavior : MonoBehaviour
             }
             else
             {
-                // 🔥 ГАРАНТИРОВАННО запускаем stayTimer!
-                transform.position = _targetPoint.position;  // Лепим точно в точку
+                transform.position = _targetPoint.position;
                 _stayTimer = Random.Range(stayDurationMin, stayDurationMax);
                 Destroy(_targetPoint.gameObject);
                 _targetPoint = null;
@@ -83,9 +86,33 @@ public class MoveToPointBehavior : MonoBehaviour
         }
     }
 
+    /// 🔥 НОВЫЙ РАНДОМ ИЗ ЛЮБИМЫХ КАЖДЫЙ РАЗ!
     void ChooseTargetPoint()
     {
-        Transform point = plant.GetRandomFeedingPoint();
+        Fish fish = GetComponent<Fish>();
+    
+        if (string.IsNullOrEmpty(fish.favoritePlantID))
+        {
+            Debug.LogWarning($"🐟 {gameObject.name} БЕЗ ЛЮБИМЫХ — НЕ ЕСТ!");
+            return;
+        }
+    
+        string[] favoriteIDs = fish.favoritePlantID.Split(',');
+        string chosenID = favoriteIDs[Random.Range(0, favoriteIDs.Length)].Trim();
+        Plant chosenPlant = _aquarium.plants.FirstOrDefault(p => p.plantID.Trim() == chosenID);
+    
+        if (chosenPlant == null)
+        {
+            Debug.LogWarning($"🐟 {gameObject.name} НЕ НАЙДЕН '{chosenID}' — НЕ ЕСТ!");
+            return;
+        }
+    
+        // ✅ ФИКС: УСТАНАВЛИВАЕМ plant для совместимости!
+        this.plant = chosenPlant;
+    
+        Debug.Log($"🐟 {gameObject.name} → {chosenPlant.plantID} из '{fish.favoritePlantID}'");
+    
+        Transform point = chosenPlant.GetRandomFeedingPoint();
         if (point == null) return;
 
         GameObject target = new GameObject("TempTarget");
@@ -95,6 +122,5 @@ public class MoveToPointBehavior : MonoBehaviour
         target.transform.parent = transform.parent;
         _targetPoint = target.transform;
         _moving = true;
-        Debug.Log($"🐠 {gameObject.name} → {plant.plantID}");
     }
 }

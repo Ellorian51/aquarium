@@ -40,28 +40,30 @@ public class AquariumController : MonoBehaviour
         Fish fish = fishObj.GetComponent<Fish>();
         if (fish != null) fish.aquarium = this;
 
-        // 🔥 ID СИСТЕМА — Назначаем Plant для MoveToPointBehavior
+        // 🔥 МУЛЬТИ-ID: "Plant3,Plant2" ищет по порядку
         MoveToPointBehavior mtp = fishObj.GetComponent<MoveToPointBehavior>();
         if (mtp != null && plants != null && plants.Length > 0)
         {
-            Plant targetPlant;
+            Plant targetPlant = null;
             
-            // ✅ ПРИОРИТЕТ #1: любимое растение по ID
             if (!string.IsNullOrEmpty(fish.favoritePlantID))
             {
-                targetPlant = plants.FirstOrDefault(p => p.plantID == fish.favoritePlantID);
+                string[] favoriteIDs = fish.favoritePlantID.Split(',');
+                foreach (string id in favoriteIDs)
+                {
+                    targetPlant = plants.FirstOrDefault(p => p.plantID.Trim() == id.Trim());
+                    if (targetPlant != null) break;
+                }
+                
                 if (targetPlant != null)
                 {
                     mtp.plant = targetPlant;
-                    Debug.Log($"🐟 {fishObj.name} → ЛЮБИМОЕ {targetPlant.plantID}");
-                }
-                else
-                {
-                    Debug.LogWarning($"🐟 {fishObj.name} НЕ НАЙДЕН PLANT ID '{fish.favoritePlantID}'!");
+                    Debug.Log($"🐟 {fishObj.name} → ЛЮБИМОЕ {targetPlant.plantID} из '{fish.favoritePlantID}'");
                 }
             }
-            // ✅ ПРИОРИТЕТ #2: рандом из массива plants
-            else
+            
+            // Если любимых нет/не найдены → рандом
+            if (targetPlant == null)
             {
                 int plantIdx = Random.Range(0, plants.Length);
                 targetPlant = plants[plantIdx];

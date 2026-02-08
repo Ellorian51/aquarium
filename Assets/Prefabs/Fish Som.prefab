@@ -110,7 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fish
   bottomDweller: 1
   isAggressive: 1
-  favoritePlantID: Plant3
+  favoritePlantID: Plant4, Plant3
   aquarium: {fileID: 0}
 --- !u!114 &387146017040779784
 MonoBehaviour:
@@ -158,8 +158,8 @@ MonoBehaviour:
   speed: 2.5
   feedingRadius: 0.5
   moveInterval: 20
-  stayDurationMin: 0.3
-  stayDurationMax: 0.4
+  stayDurationMin: 1
+  stayDurationMax: 1.5
 --- !u!58 &-6577462633676196313
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -210,5 +210,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScaryMove
   detectRadius: 0.62
   attackChance: 0.0146
-  fleeCooldown: 1
+  fleeCooldown: 3.1
   scaredCooldown: 10
