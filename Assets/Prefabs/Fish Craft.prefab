@@ -132,8 +132,15 @@ MonoBehaviour:
   pauseDurationMax: 0.45
   directionChangeChance: 0.0026
   yWobbleAmount: 0.146
+  dwellerMovement: 0
+  dwellerPauseChance: 0.02
+  dwellerPauseDurationMin: 0.8
+  dwellerPauseDurationMax: 2
+  dwellerDirectionChangeChance: 0.002
+  dwellerYWobbleAmount: 0.1
   fleeSpeedMultiplier: 2.5
   fleeDuration: 1
+  fleeDistance: 5.18
 --- !u!114 &6082326187590262783
 MonoBehaviour:
   m_ObjectHideFlags: 0

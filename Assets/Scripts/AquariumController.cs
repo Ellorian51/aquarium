@@ -18,6 +18,7 @@ public class AquariumController : MonoBehaviour
 
     [Header("Растения для кормежки")]
     public Plant[] plants;  // перетаскивай все Plant ИЗ HIERARCHY сюда
+    
 
     /// Создаёт новую рыбу
     public void AddFish()

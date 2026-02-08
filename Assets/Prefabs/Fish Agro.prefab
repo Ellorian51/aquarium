@@ -109,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fish
   bottomDweller: 0
   isAggressive: 1
-  favoritePlantID: Plant3
+  favoritePlantID: Plant1
   aquarium: {fileID: 0}
 --- !u!114 &387146017040779784
 MonoBehaviour:
@@ -140,6 +140,7 @@ MonoBehaviour:
   dwellerYWobbleAmount: 0.1
   fleeSpeedMultiplier: 2.5
   fleeDuration: 1
+  fleeDistance: 4
 --- !u!114 &-3495592589719757275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,4 +172,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RepelBehavior
   detectRadius: 0.79
+  attackChance: 0.033
   fleeCooldown: 2.05
