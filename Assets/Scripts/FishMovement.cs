@@ -3,22 +3,22 @@ using UnityEngine;
 public class FishMovement : MonoBehaviour
 {
     [Header("Скорость и базовое поведение")]
-    public float swimSpeed = 1f;
-    public int startDirection;
-    public float yOffsetSeed;
+    public float swimSpeed = 1f;       // Базовая скорость плавания
+    public int startDirection;         // Начальное направление: 1 или -1
+    public float yOffsetSeed;          // Случайная фаза для движения по Y
 
     [Header("Loops")]
-    public bool basicMovement;
+    public bool basicMovement;         // Включить базовое движение (влево/вправо)
 
     [Header("Живое поведение для BasicMovement")]
-    [Range(0f, 0.2f)] public float pauseChance = 0.01f;
-    [Range(0.1f, 3f)] public float pauseDurationMin = 0.3f;
-    [Range(0.1f, 3f)] public float pauseDurationMax = 1.0f;
-    [Range(0f, 0.05f)] public float directionChangeChance = 0.005f;
-    [Range(0f, 1f)] public float yWobbleAmount = 0.2f;
+    [Range(0f, 0.2f)] public float pauseChance = 0.01f;           // Вероятность паузы
+    [Range(0.1f, 3f)] public float pauseDurationMin = 0.3f;       // Мин. длительность паузы
+    [Range(0.1f, 3f)] public float pauseDurationMax = 1.0f;       // Макс. длительность паузы
+    [Range(0f, 0.05f)] public float directionChangeChance = 0.005f; // Шанс смены направления
+    [Range(0f, 1f)] public float yWobbleAmount = 0.2f;           // Амплитуда колебаний по Y
 
     [Header("Dweller Movements")]
-    public bool dwellerMovement;  // ✅ Новая галка!
+    public bool dwellerMovement;      // Режим донной рыбы
     [Range(0f, 0.2f)] public float dwellerPauseChance = 0.02f;
     [Range(0.1f, 3f)] public float dwellerPauseDurationMin = 0.8f;
     [Range(0.1f, 3f)] public float dwellerPauseDurationMax = 2.0f;
@@ -26,72 +26,78 @@ public class FishMovement : MonoBehaviour
     [Range(0f, 1f)] public float dwellerYWobbleAmount = 0.1f;
 
     [Header("Побег")]
-    [Range(1f, 5f)] public float fleeSpeedMultiplier = 2.5f;
-    [Range(0.5f, 3f)] public float fleeDuration = 1f;
-    [Range(2f, 10f)] public float fleeDistance = 4f;
-    
+    [Range(1f, 5f)] public float fleeSpeedMultiplier = 2.5f;  // Множитель скорости при побеге
+    [Range(0.5f, 3f)] public float fleeDuration = 1f;          // Время побега
+    [Range(2f, 10f)] public float fleeDistance = 4f;           // Расстояние побега
 
-    private float _direction;
-    private float _yOffsetPhase;
-    private bool _isPaused;
-    private float _pauseTimer;
-    
-    private float _fleeMultiplier = 1f;
-    private float _fleeTimer;
+    // Внутренние поля
+    private float _direction;          // Текущее направление
+    private float _yOffsetPhase;       // Фаза для Y колебаний
+    private bool _isPaused;            // Флаг паузы
+    private float _pauseTimer;         // Таймер паузы
 
-    private Fish _fish;
-    private AquariumController _aquarium;
-    private MoveToPointBehavior _mtp;
-    private Vector3 _prevPos;
+    private float _fleeMultiplier = 1f; // Множитель скорости побега
+    private float _fleeTimer;           // Таймер побега
+
+    private Fish _fish;                  // Ссылка на Fish
+    private AquariumController _aquarium; // Ссылка на Aquarium
+    private MoveToPointBehavior _mtp;    // Ссылка на поведение к точке кормежки
+    private Vector3 _prevPos;            // Для вычисления направления движения
 
     void Start()
     {
-        _fish = GetComponent<Fish>();
-        _aquarium = _fish.aquarium;
-        _mtp = GetComponent<MoveToPointBehavior>();
+        _fish = GetComponent<Fish>();                 // Получаем компонент Fish
+        _aquarium = _fish.aquarium;                  // Получаем ссылку на Aquarium
+        _mtp = GetComponent<MoveToPointBehavior>();  // Получаем поведение к точке
 
         Debug.Log($"🐟 {gameObject.name} FishMovement START: mtp={_mtp != null} plant={_mtp?.plant?.name ?? "NO"}");
 
+        // Устанавливаем направление: если startDirection задан, используем его, иначе случайно
         _direction = startDirection != 0 ? startDirection : (Random.value > 0.5f ? 1f : -1f);
+
+        // Фаза для Y колебаний + случайная фаза
         _yOffsetPhase = yOffsetSeed + Random.Range(0f, Mathf.PI * 2f);
-        _prevPos = transform.position;
+
+        _prevPos = transform.position; // Запоминаем начальную позицию
     }
 
     void Update()
     {
         Fish fish = GetComponent<Fish>();
-        if (fish != null) fish.CheckStarvation();  
-        
-        _prevPos = transform.position;
-        
-        // ✅ КОРМЕЖКА ИМЕЕТ ПРИОРИТЕТ
+        if (fish != null) fish.CheckStarvation();   // Проверка голода
+
+        _prevPos = transform.position; // Сохраняем позицию на начало кадра
+
+        // КОРМЕЖКА ИМЕЕТ ПРИОРИТЕТ: если рыба движется к точке, базовое движение не выполняется
         if (_mtp != null && _mtp.isMoving) return;
-        
-        if (_aquarium == null) return;  
+
+        if (_aquarium == null) return;
 
         Vector3 newPos = transform.position;
 
-        // 🔥 ПАУЗЫ — для любого режима
+        // Паузы
         bool anyMovement = basicMovement || dwellerMovement;
         if (anyMovement && !_isPaused && Random.value < GetPauseChance())
         {
             _isPaused = true;
             _pauseTimer = Random.Range(GetPauseDurationMin(), GetPauseDurationMax());
         }
+
         if (_isPaused)
         {
             _pauseTimer -= Time.deltaTime;
             if (_pauseTimer <= 0f) _isPaused = false;
         }
 
-        // 🔥 СМЕНА НАПРАВЛЕНИЯ
+        // Смена направления
         if (anyMovement && !_isPaused && Random.value < GetDirectionChangeChance())
             _direction *= -1f;
 
-        // СКОРОСТЬ
+        // Вычисляем скорость
         float baseSpeed = swimSpeed * Random.Range(0.8f, 1.2f);
         float currentSpeed = _isPaused ? 0f : baseSpeed;
-        
+
+        // Применяем побег
         if (_fleeTimer > 0f)
         {
             currentSpeed *= _fleeMultiplier;
@@ -100,7 +106,7 @@ public class FishMovement : MonoBehaviour
 
         newPos.x += _direction * currentSpeed * Time.deltaTime;
 
-        // Границы
+        // Проверка границ аквариума
         if (newPos.x > _aquarium.rightLimit)
         {
             newPos.x = _aquarium.rightLimit;
@@ -112,7 +118,7 @@ public class FishMovement : MonoBehaviour
             _direction = 1f;
         }
 
-        // 🔥 Y движение — выбор по режиму
+        // Движение по Y
         float yWobble = dwellerMovement ? dwellerYWobbleAmount : yWobbleAmount;
         float yOffset = _fish.bottomDweller
             ? _aquarium.bottomLimit + 0.6f + Mathf.Sin(Time.time * 0.8f + _yOffsetPhase) * 0.3f
@@ -124,6 +130,7 @@ public class FishMovement : MonoBehaviour
 
     void LateUpdate()
     {
+        // Вычисляем движение по X для корректировки спрайта
         Vector3 velocity = (transform.position - _prevPos) / Time.deltaTime;
         if (Mathf.Abs(velocity.x) > 0.05f)
         {
@@ -134,34 +141,16 @@ public class FishMovement : MonoBehaviour
         }
     }
 
-    // 🔥 Get методы для режимов
-    float GetPauseChance()
-    {
-        if (dwellerMovement) return dwellerPauseChance;
-        return pauseChance;
-    }
+    // Методы для получения параметров паузы и смены направления
+    float GetPauseChance() => dwellerMovement ? dwellerPauseChance : pauseChance;
+    float GetPauseDurationMin() => dwellerMovement ? dwellerPauseDurationMin : pauseDurationMin;
+    float GetPauseDurationMax() => dwellerMovement ? dwellerPauseDurationMax : pauseDurationMax;
+    float GetDirectionChangeChance() => dwellerMovement ? dwellerDirectionChangeChance : directionChangeChance;
 
-    float GetPauseDurationMin()
-    {
-        if (dwellerMovement) return dwellerPauseDurationMin;
-        return pauseDurationMin;
-    }
-
-    float GetPauseDurationMax()
-    {
-        if (dwellerMovement) return dwellerPauseDurationMax;
-        return pauseDurationMax;
-    }
-
-    float GetDirectionChangeChance()
-    {
-        if (dwellerMovement) return dwellerDirectionChangeChance;
-        return directionChangeChance;
-    }
-
+    // Метод для побега от другой рыбы
     public void FleeFromFish(float fleeDirection)
     {
-        // if (_mtp != null && _mtp.isMoving) return;  ← ЗАКОММЕНТИРУЙ!
+        if (_mtp != null && _mtp.isMoving) return;  // Кормящаяся рыба не убегает
     
         ScaryMove scary = GetComponent<ScaryMove>();
         if (scary != null) scary.OnScared();
@@ -169,6 +158,7 @@ public class FishMovement : MonoBehaviour
         _direction = fleeDirection;
         _fleeMultiplier = fleeSpeedMultiplier;
         _fleeTimer = Mathf.Min(fleeDuration, fleeDistance / swimSpeed);
+
         Debug.Log($"{gameObject.name} УБЕГАЕТ {fleeDistance}m dir={fleeDirection}");
     }
 }

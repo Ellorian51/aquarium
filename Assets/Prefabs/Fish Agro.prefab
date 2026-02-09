@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 387146017040779784}
   - component: {fileID: -3495592589719757275}
   - component: {fileID: 4778168204412756803}
+  - component: {fileID: -8654517000193421816}
   m_Layer: 0
   m_Name: Fish Agro
   m_TagString: Untagged
@@ -134,7 +135,7 @@ MonoBehaviour:
   pauseDurationMin: 0.5
   pauseDurationMax: 0.84
   directionChangeChance: 0.0012
-  yWobbleAmount: 0.2
+  yWobbleAmount: 0.1
   dwellerMovement: 0
   dwellerPauseChance: 0.02
   dwellerPauseDurationMin: 0.8
@@ -178,3 +179,39 @@ MonoBehaviour:
   attackChance: 0.1
   fleeCooldown: 2.05
   scaredCooldown: 5
+--- !u!58 &-8654517000193421816
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6392574676814734785}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.39

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Random = UnityEngine.Random;  // ✅ Алиас наверху
 
@@ -28,21 +29,18 @@ public class ScaryMove : MonoBehaviour
         Debug.Log($"{gameObject.name} Scary готов!");
     }
 
+    [Obsolete("Obsolete")]
     void Update()
     {
         if (!_fish.isAggressive) return;
     
-        
         MoveToPointBehavior ownMtp = GetComponent<MoveToPointBehavior>();
         if (ownMtp != null && ownMtp.isMoving) return;
-        if (Time.time - _lastScaredTime < scaredCooldown)
-        // ✅ НОВОЕ: НЕ пугает, если сам напуган недавно
         if (Time.time - _lastScaredTime < scaredCooldown) return;
-    
+        
         if (Time.time - _lastScareTime < fleeCooldown) return;
 
         if (Random.value > attackChance) return;
-
         Collider2D[] nearby = new Collider2D[20];
         int count = Physics2D.OverlapCircleNonAlloc(transform.position, detectRadius, nearby);
         for (int i = 0; i < count; i++)
@@ -50,21 +48,33 @@ public class ScaryMove : MonoBehaviour
             Fish otherFish = nearby[i].GetComponent<Fish>();
             if (otherFish == null || otherFish == _fish) continue;
 
-            Debug.Log($"🦈 {gameObject.name} пугает {nearby[i].name}");
-
-            FishMovement otherMovement = nearby[i].GetComponent<FishMovement>();
-            if (otherMovement != null)
+            // 🔥 Пугаем ТОЛЬКО НЕагрессивных рыб
+            if (!otherFish.isAggressive)
             {
-                Vector2 victimFleeDir = (nearby[i].transform.position - transform.position).normalized;
-                otherMovement.FleeFromFish(Mathf.Sign(victimFleeDir.x));
+                Debug.Log($"🦈 {gameObject.name} пугает {nearby[i].name}");
+
+                FishMovement otherMovement = nearby[i].GetComponent<FishMovement>();
+                if (otherMovement != null)
+                {
+                    Vector2 victimFleeDir = (nearby[i].transform.position - transform.position).normalized;
+                    otherMovement.FleeFromFish(Mathf.Sign(victimFleeDir.x));
+                }
+                
+                // 🔥 ПРИНУДИТЕЛЬНО ОСТАНАВЛИВАЕМ КОРМЕЖКУ
+                MoveToPointBehavior victimMtp = nearby[i].GetComponent<MoveToPointBehavior>();
+                if (victimMtp != null)
+                {
+                    victimMtp.enabled = false;  // БЛОКИРУЕМ движение к еде
+                    Debug.Log($"🍽️ {nearby[i].name} кормление ОСТАНОВЛЕНО!");
+                }
+            
+                _lastScareTime = Time.time;
+                return;
             }
-        
-            _lastScareTime = Time.time;
-            return;
         }
     }
 
-    // ✅ НОВЫЙ ПУБЛИЧНЫЙ МЕТОД: вызывается извне при flee
+    // ✅ ПУБЛИЧНЫЙ МЕТОД: вызывается при flee
     public void OnScared()
     {
         _lastScaredTime = Time.time;

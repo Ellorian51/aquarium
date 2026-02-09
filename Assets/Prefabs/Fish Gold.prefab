@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1340538064853767933}
   - component: {fileID: -3256934374506357133}
   - component: {fileID: -1880964464942135812}
-  - component: {fileID: -5782700575436088879}
+  - component: {fileID: -1128042997799412352}
   m_Layer: 0
   m_Name: Fish Gold
   m_TagString: Untagged
@@ -141,7 +141,7 @@ MonoBehaviour:
   dwellerPauseDurationMax: 2
   dwellerDirectionChangeChance: 0.002
   dwellerYWobbleAmount: 0.1
-  fleeSpeedMultiplier: 4
+  fleeSpeedMultiplier: 3
   fleeDuration: 0.5
   fleeDistance: 7.7
 --- !u!114 &-1880964464942135812
@@ -157,12 +157,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToPointBehavior
   plant: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
-  speed: 3
+  speed: 0.1
   feedingRadius: 1
   moveInterval: 25
   stayDurationMin: 0.3
   stayDurationMax: 2
---- !u!58 &-5782700575436088879
+--- !u!58 &-1128042997799412352
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -197,4 +197,4 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 1
+  m_Radius: 0.64
