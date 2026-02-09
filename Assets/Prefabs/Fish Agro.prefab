@@ -162,7 +162,7 @@ MonoBehaviour:
   feedingRadius: 1
   moveInterval: 12
   stayDurationMin: 0.3
-  stayDurationMax: 2
+  stayDurationMax: 4
 --- !u!114 &4778168204412756803
 MonoBehaviour:
   m_ObjectHideFlags: 0

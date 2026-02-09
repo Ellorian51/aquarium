@@ -1,10 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
-using System.Linq;  // для Array.Find
+using System.Linq;
 
-/// <summary>
-/// Контроллер аквариума: создаёт рыбу, управляет границами.
-/// </summary>
 public class AquariumController : MonoBehaviour
 {
     [Header("Границы аквариума")]
@@ -17,10 +14,36 @@ public class AquariumController : MonoBehaviour
     public GameObject[] fishPrefabs;
 
     [Header("Растения для кормежки")]
-    public Plant[] plants;  // перетаскивай все Plant ИЗ HIERARCHY сюда
-    
+    public Plant[] plants;
 
-    /// Создаёт новую рыбу
+    private const float RISE_SPEED = 0.08f;  // 🔥 Приватная константа подъёма
+
+    void Update()
+    {
+        // 🔥 ПРИВАТНЫЙ ПОДЪЁМ всех бездействующих рыб
+        RiseInactiveFish();
+    }
+
+    private void RiseInactiveFish()
+    {
+        foreach (Transform child in transform)
+        {
+            if (!child.gameObject.activeInHierarchy) continue;
+            
+            FishMovement fm = child.GetComponent<FishMovement>();
+            if (fm == null) continue;
+            
+            // Поднимаем ТОЛЬКО полностью бездействующих
+            if (!fm.IsActiveMovement())
+            {
+                Vector3 pos = child.position;
+                pos.y += RISE_SPEED * Time.deltaTime;
+                pos.y = Mathf.Clamp(pos.y, bottomLimit + 0.5f, topLimit - 0.2f);
+                child.position = pos;
+            }
+        }
+    }
+
     public void AddFish()
     {
         if (fishPrefabs.Length == 0) return;
@@ -36,11 +59,9 @@ public class AquariumController : MonoBehaviour
 
         GameObject fishObj = Instantiate(prefab, new Vector3(x, y, 0), Quaternion.identity, transform);
 
-        // Связь с Aquarium
         Fish fish = fishObj.GetComponent<Fish>();
         if (fish != null) fish.aquarium = this;
 
-        // 🔥 МУЛЬТИ-ID: "Plant3,Plant2" ищет по порядку
         MoveToPointBehavior mtp = fishObj.GetComponent<MoveToPointBehavior>();
         if (mtp != null && plants != null && plants.Length > 0)
         {
@@ -58,25 +79,19 @@ public class AquariumController : MonoBehaviour
                 if (targetPlant != null)
                 {
                     mtp.plant = targetPlant;
-                    Debug.Log($"🐟 {fishObj.name} → ЛЮБИМОЕ {targetPlant.plantID} из '{fish.favoritePlantID}'");
+                    Debug.Log($"🐟 {fishObj.name} → ЛЮБИМОЕ {targetPlant.plantID}");
                 }
             }
             
-            // Если любимых нет/не найдены → рандом
             if (targetPlant == null)
             {
                 int plantIdx = Random.Range(0, plants.Length);
                 targetPlant = plants[plantIdx];
                 mtp.plant = targetPlant;
-                Debug.Log($"🐟 {fishObj.name} → РАНДОМ {targetPlant.plantID} (#{plantIdx})");
+                Debug.Log($"🐟 {fishObj.name} → РАНДОМ {targetPlant.plantID}");
             }
         }
-        else
-        {
-            Debug.LogWarning($"🐟 {fishObj.name} нет MoveToPointBehavior или plants[] пуст!");
-        }
 
-        // Настройка FishMovement
         FishMovement movement = fishObj.GetComponent<FishMovement>();
         if (movement != null)
         {

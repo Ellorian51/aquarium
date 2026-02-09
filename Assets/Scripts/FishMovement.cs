@@ -161,4 +161,10 @@ public class FishMovement : MonoBehaviour
 
         Debug.Log($"{gameObject.name} УБЕГАЕТ {fleeDistance}m dir={fleeDirection}");
     }
+
+    // 🔥 ГЕТТЕР ДЛЯ AquariumController - проверяет АКТИВНОЕ движение
+    public bool IsActiveMovement()
+    {
+        return _isPaused || _fleeTimer > 0f || (_mtp != null && _mtp.isMoving);
+    }
 }
