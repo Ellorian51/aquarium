@@ -16,7 +16,7 @@ public class AquariumController : MonoBehaviour
     [Header("Растения для кормежки")]
     public Plant[] plants;
 
-    private const float RISE_SPEED = 0.08f;  // 🔥 Приватная константа подъёма
+    private const float RiseSpeed = 0.08f;  // 🔥 Приватная константа подъёма
 
     void Update()
     {
@@ -37,7 +37,7 @@ public class AquariumController : MonoBehaviour
             if (!fm.IsActiveMovement())
             {
                 Vector3 pos = child.position;
-                pos.y += RISE_SPEED * Time.deltaTime;
+                pos.y += RiseSpeed * Time.deltaTime;
                 pos.y = Mathf.Clamp(pos.y, bottomLimit + 0.5f, topLimit - 0.2f);
                 child.position = pos;
             }
