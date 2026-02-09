@@ -134,7 +134,7 @@ MonoBehaviour:
   pauseDurationMin: 0.5
   pauseDurationMax: 0.84
   directionChangeChance: 0.0012
-  yWobbleAmount: 0.2
+  yWobbleAmount: 0.1
   dwellerMovement: 0
   dwellerPauseChance: 0.02
   dwellerPauseDurationMin: 0.8
