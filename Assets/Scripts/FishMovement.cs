@@ -43,12 +43,15 @@ public class FishMovement : MonoBehaviour
     private AquariumController _aquarium; // Ссылка на Aquarium
     private MoveToPointBehavior _mtp;    // Ссылка на поведение к точке кормежки
     private Vector3 _prevPos;            // Для вычисления направления движения
+    private const float RiseSpeed = 0.08f;
 
     void Start()
     {
-        _fish = GetComponent<Fish>();                 // Получаем компонент Fish
-        _aquarium = _fish.aquarium;                  // Получаем ссылку на Aquarium
-        _mtp = GetComponent<MoveToPointBehavior>();  // Получаем поведение к точке
+        {
+            _fish = GetComponent<Fish>(); // ← КЭШИРУЕМ ОДИН РАЗ!
+            _aquarium = _fish.aquarium;
+            _mtp = GetComponent<MoveToPointBehavior>();
+        }
 
         Debug.Log($"🐟 {gameObject.name} FishMovement START: mtp={_mtp != null} plant={_mtp?.plant?.name ?? "NO"}");
 
@@ -63,10 +66,21 @@ public class FishMovement : MonoBehaviour
 
     void Update()
     {
-        Fish fish = GetComponent<Fish>();
-        if (fish != null) fish.CheckStarvation();   // Проверка голода
+        if (_fish != null) _fish.CheckStarvation();  // ← КЭШ ВМЕСТО CheckStarvation (ОН ЖРЁТ)
+        _prevPos = transform.position;
+        _prevPos = transform.position;
 
-        _prevPos = transform.position; // Сохраняем позицию на начало кадра
+        // 🔥 НОВЫЙ КОД: подъём бездействующих рыб
+        if(!IsActiveMovement())
+        {
+            Vector3 pos = transform.position;
+            pos.y += RiseSpeed * Time.deltaTime;
+            if (_aquarium != null)
+            {
+                pos.y = Mathf.Clamp(pos.y, _aquarium.bottomLimit + 0.5f, _aquarium.topLimit - 0.2f);
+            }
+            transform.position = pos;
+        }
 
         // КОРМЕЖКА ИМЕЕТ ПРИОРИТЕТ: если рыба движется к точке, базовое движение не выполняется
         if (_mtp != null && _mtp.isMoving) return;

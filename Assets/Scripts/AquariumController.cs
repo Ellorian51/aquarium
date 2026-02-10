@@ -1,6 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System.Linq;
+using System.Collections.Generic;
 
 public class AquariumController : MonoBehaviour
 {
@@ -16,42 +17,43 @@ public class AquariumController : MonoBehaviour
     [Header("Растения для кормежки")]
     public Plant[] plants;
 
-    private const float RiseSpeed = 0.08f;  // 🔥 Приватная константа подъёма
+    private List<FishMovement> activeFishes = new List<FishMovement>();
 
     void Update()
     {
-        // 🔥 ПРИВАТНЫЙ ПОДЪЁМ всех бездействующих рыб
-        RiseInactiveFish();
+        // ПУСТО! Логика подъёма теперь в FishMovement
     }
 
-    private void RiseInactiveFish()
-    {
-        foreach (Transform child in transform)
-        {
-            if (!child.gameObject.activeInHierarchy) continue;
-            
-            FishMovement fm = child.GetComponent<FishMovement>();
-            if (fm == null) continue;
-            
-            // Поднимаем ТОЛЬКО полностью бездействующих
-            if (!fm.IsActiveMovement())
-            {
-                Vector3 pos = child.position;
-                pos.y += RiseSpeed * Time.deltaTime;
-                pos.y = Mathf.Clamp(pos.y, bottomLimit + 0.5f, topLimit - 0.2f);
-                child.position = pos;
-            }
-        }
-    }
-
+    // 🔥 СТАРЫЙ МЕТОД: рандомный спавн
     public void AddFish()
     {
         if (fishPrefabs.Length == 0) return;
 
         int idx = Random.Range(0, fishPrefabs.Length);
         GameObject prefab = fishPrefabs[idx];
+        SpawnFishInstance(prefab);
+    }
 
-        bool isBottom = prefab.GetComponent<Fish>().bottomDweller;
+    // 🔥 НОВЫЙ МЕТОД: спавн по имени для кнопок
+    public void SpawnSpecificFish(string fishType)
+    {
+        GameObject prefab = fishPrefabs.FirstOrDefault(f => f.name.Contains(fishType));
+        
+        if (prefab == null)
+        {
+            Debug.LogError($"🐟 Префаб '{fishType}' не найден!");
+            return;
+        }
+        
+        SpawnFishInstance(prefab);
+    }
+
+    // 🔥 ОБЩИЙ ПРИВАТНЫЙ МЕТОД: вся логика спавна
+    private void SpawnFishInstance(GameObject prefab)
+    {
+        Fish prefabFish = prefab.GetComponent<Fish>();
+        bool isBottom = prefabFish != null ? prefabFish.bottomDweller : false;
+        
         float x = Random.Range(leftLimit + 0.5f, rightLimit - 0.7f);
         float y = isBottom
             ? Random.Range(bottomLimit + 0.5f, bottomLimit + 0.8f)
@@ -60,21 +62,34 @@ public class AquariumController : MonoBehaviour
         GameObject fishObj = Instantiate(prefab, new Vector3(x, y, 0), Quaternion.identity, transform);
 
         Fish fish = fishObj.GetComponent<Fish>();
-        if (fish != null) fish.aquarium = this;
+        if (fish == null) 
+        {
+            Debug.LogError($"🐟 {prefab.name} без Fish компонента!");
+            return;
+        }
+        fish.aquarium = this;
 
+        // Кэшируем FishMovement
+        FishMovement fishMovement = fishObj.GetComponent<FishMovement>();
+        if (fishMovement != null)
+        {
+            activeFishes.Add(fishMovement);
+            Debug.Log($"🐟 Добавлена в список. Всего рыб: {activeFishes.Count}");
+            
+            fishMovement.startDirection = Random.value > 0.5f ? 1 : -1;
+            fishMovement.yOffsetSeed = Random.Range(0f, Mathf.PI * 2f);
+        }
+
+        // Логика растений
         MoveToPointBehavior mtp = fishObj.GetComponent<MoveToPointBehavior>();
         if (mtp != null && plants != null && plants.Length > 0)
         {
             Plant targetPlant = null;
             
-            if (!string.IsNullOrEmpty(fish.favoritePlantID))
+            if (fish.favoritePlants != null && fish.favoritePlants.Count > 0)
             {
-                string[] favoriteIDs = fish.favoritePlantID.Split(',');
-                foreach (string id in favoriteIDs)
-                {
-                    targetPlant = plants.FirstOrDefault(p => p.plantID.Trim() == id.Trim());
-                    if (targetPlant != null) break;
-                }
+                string favoriteID = fish.favoritePlants[Random.Range(0, fish.favoritePlants.Count)];
+                targetPlant = plants.FirstOrDefault(p => p.plantID.Trim() == favoriteID.Trim());
                 
                 if (targetPlant != null)
                 {
@@ -90,13 +105,6 @@ public class AquariumController : MonoBehaviour
                 mtp.plant = targetPlant;
                 Debug.Log($"🐟 {fishObj.name} → РАНДОМ {targetPlant.plantID}");
             }
-        }
-
-        FishMovement movement = fishObj.GetComponent<FishMovement>();
-        if (movement != null)
-        {
-            movement.startDirection = Random.value > 0.5f ? 1 : -1;
-            movement.yOffsetSeed = Random.Range(0f, Mathf.PI * 2f);
         }
     }
 }

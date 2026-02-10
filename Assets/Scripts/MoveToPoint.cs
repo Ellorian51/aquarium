@@ -92,16 +92,15 @@ public class MoveToPointBehavior : MonoBehaviour
     void ChooseTargetPoint()
     {
         Fish fish = GetComponent<Fish>();
-        if (string.IsNullOrEmpty(fish.favoritePlantID))
+        if (fish.favoritePlants == null || fish.favoritePlants.Count == 0)
         {
             Debug.LogWarning($"🐟 {gameObject.name} БЕЗ ЛЮБИМЫХ — НЕ ЕСТ!");
             return;
         }
 
-        string[] favoriteIDs = fish.favoritePlantID.Split(',');
-        string chosenID = favoriteIDs[Random.Range(0, favoriteIDs.Length)].Trim(); // Случайное любимое растение
+        string chosenID = fish.favoritePlants[Random.Range(0, fish.favoritePlants.Count)];  // Случайное любимое растение
 
-        Plant chosenPlant = _aquarium.plants.FirstOrDefault(p => p.plantID.Trim() == chosenID);
+        Plant chosenPlant = _aquarium.plants.FirstOrDefault(p => p.plantID.Trim() == chosenID.Trim());
         if (chosenPlant == null)
         {
             Debug.LogWarning($"🐟 {gameObject.name} НЕ НАЙДЕН '{chosenID}' — НЕ ЕСТ!");
@@ -110,7 +109,7 @@ public class MoveToPointBehavior : MonoBehaviour
 
         // Фикс: сохраняем plant для совместимости
         this.plant = chosenPlant;
-        Debug.Log($"🐟 {gameObject.name} → {chosenPlant.plantID} из '{fish.favoritePlantID}'");
+        Debug.Log($"🐟 {gameObject.name} → {chosenPlant.plantID} из '{string.Join(",", fish.favoritePlants)}'");
 
         Transform point = chosenPlant.GetRandomFeedingPoint();
         if (point == null) return;
@@ -121,9 +120,9 @@ public class MoveToPointBehavior : MonoBehaviour
             Random.Range(-feedingRadius, feedingRadius),
             Random.Range(-feedingRadius, feedingRadius),
             0);
-        target.transform.parent = transform.parent; // Делаем дочерним объектом аквариума
+        target.transform.parent = transform.parent;
 
         _targetPoint = target.transform;
-        _moving = true; // Начинаем движение
+        _moving = true;
     }
 }

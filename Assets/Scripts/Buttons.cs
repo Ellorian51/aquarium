@@ -3,47 +3,24 @@ using UnityEngine.UI;
 
 public class SpecificFishSpawner : MonoBehaviour
 {
-    [Header("Настройки")]
-    public AquariumController aquarium;
-    [Range(0, 10)] public int fishIndex;  // № рыбы из fishPrefabs[]
+    [Header("Что спавнить")]
+    public string fishType = "Fish Agro";  // Просто имя типа рыбы
     
-    private Button button;
+    private Button _button;
+    private AquariumController aquarium;
     
     void Start()
     {
-        button = GetComponent<Button>();
-        if (button == null)
-        {
-            Debug.LogError("❌ Button компонент не найден!");
-            return;
-        }
+        _button = GetComponent<Button>();
+        aquarium = FindObjectOfType<AquariumController>();  // Находит сам
         
-        button.onClick.AddListener(SpawnFish);
-        Debug.Log($"✅ Кнопка готова спавнить рыбу #{fishIndex}");
-    }
-    
-    void SpawnFish()
-    {
-        if (aquarium == null)
-        {
-            Debug.LogError("❌ Перетащи AquariumController!");
-            return;
-        }
-        
-        if (fishIndex >= aquarium.fishPrefabs.Length)
-        {
-            Debug.LogError($"❌ fishIndex {fishIndex} вне массива! Размер: {aquarium.fishPrefabs.Length}");
-            return;
-        }
-        
-        GameObject fishPrefab = aquarium.fishPrefabs[fishIndex];
-        Instantiate(fishPrefab, aquarium.transform);
-        Debug.Log($"🐟 Спавнена рыба #{fishIndex}: {fishPrefab.name}");
+        _button.onClick.AddListener(() => aquarium.SpawnSpecificFish(fishType));
+        Debug.Log($"✅ Кнопка '{fishType}' готова");
     }
     
     void OnDestroy()
     {
-        if (button != null)
-            button.onClick.RemoveListener(SpawnFish);
+        if (_button != null)
+            _button.onClick.RemoveListener(() => aquarium?.SpawnSpecificFish(fishType));
     }
 }

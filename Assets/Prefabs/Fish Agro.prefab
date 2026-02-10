@@ -110,7 +110,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fish
   bottomDweller: 0
   isAggressive: 1
-  favoritePlantID: Plant2
+  favoritePlants:
+  - 1
   starveTime: 48
   aquarium: {fileID: 0}
   lastEatTime: 0

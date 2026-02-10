@@ -461,8 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23a1d526a369bc7498333a791a7e1046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpecificFishSpawner
-  aquarium: {fileID: 1792315673}
-  fishIndex: 3
+  fishType: Fish Agro
 --- !u!114 &251993491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1354,7 +1353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: plantID
-      value: Plant3
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: feedingPoints.Array.size
@@ -1475,7 +1474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3235766808957084028, guid: 660ca52b92b38ef4fb2def901652c7b8, type: 3}
       propertyPath: plantID
-      value: Plant2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3235766808957084028, guid: 660ca52b92b38ef4fb2def901652c7b8, type: 3}
       propertyPath: 'feedingPoints.Array.data[0]'
@@ -7392,6 +7391,10 @@ PrefabInstance:
       value: Plant1
       objectReference: {fileID: 0}
     - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
+      propertyPath: plantID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: feedingPoints.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -12654,7 +12657,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: plantID
-      value: Plant4
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
       propertyPath: feedingPoints.Array.size

@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+
 
 public class Fish : MonoBehaviour
 {
@@ -7,7 +9,7 @@ public class Fish : MonoBehaviour
     public bool isAggressive;   // ✅ АГРЕССИВНАЯ!
 
     [Header("🆔 Кормежка")]
-    [SerializeField] public string favoritePlantID = "";  // "Plant4,Plant3"
+    public List<string> favoritePlants = new List<string>();  // "Plant4,Plant3"
     [Range(30f, 300f)] public float starveTime = 120f;  // 2 мин без еды
 
     [HideInInspector]
