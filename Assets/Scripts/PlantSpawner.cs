@@ -1,79 +1,71 @@
+using System;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
-/// <summary>
-/// Спавн растений в подготовленные слоты.
-/// </summary>
+
+/// Спавн растений в заранее подготовленные слоты.
+/// При спавне новое растение добавляется в AquariumController.plants
 public class PlantSpawner : MonoBehaviour
 {
-    [Header("Слоты для растений")]
-    public Transform[] plantSlots; // Пустые объекты в сцене, расставленные вручную
+    [Header("Слоты для растений на сцене")]
+    public Transform[] plantSlots; // Пустые объекты для точек спавна
 
     [Header("Доступные префабы растений")]
-    public GameObject[] plantPrefabs; // Префабы растений, уже с plantID и feedingPoints
-
-    // Следим, какие слоты заняты
-    private bool[] _slotOccupied;
-
-    void Awake()
-    {
-        // Инициализируем массив занятости слотов
-        _slotOccupied = new bool[plantSlots.Length];
-        for (int i = 0; i < _slotOccupied.Length; i++)
-            _slotOccupied[i] = false; // Все слоты свободны
-    }
+    public GameObject[] plantPrefabs; // Префабы растений
 
     /// <summary>
-    /// Спавн нового растения в свободный слот.
+    /// Спавн нового растения в указанном слоте
     /// </summary>
-    public void SpawnPlant(int index)
+    [Obsolete("Obsolete")]
+    public void SpawnPlant(int prefabIndex)
     {
-        if (plantSlots.Length == 0 || plantPrefabs.Length == 0)
+        if (plantSlots == null || plantSlots.Length == 0)
         {
-            Debug.LogWarning("Нет слотов или префабов для спавна!");
+            Debug.LogWarning("Нет слотов для спавна растений!");
             return;
         }
 
-        if (index < 0 || index >= plantPrefabs.Length)
+        if (plantPrefabs == null || plantPrefabs.Length == 0)
         {
-            Debug.LogWarning("Неверный индекс префаба растения!");
+            Debug.LogWarning("Нет доступных префабов растений!");
+            return;
+        }
+
+        if (prefabIndex < 0 || prefabIndex >= plantPrefabs.Length)
+        {
+            Debug.LogWarning($"Префаб с индексом {prefabIndex} не существует!");
             return;
         }
 
         // Ищем первый свободный слот
-        int slotIndex = -1;
-        for (int i = 0; i < _slotOccupied.Length; i++)
-        {
-            if (!_slotOccupied[i])
-            {
-                slotIndex = i;
-                break;
-            }
-        }
-
-        if (slotIndex == -1)
+        Transform slot = plantSlots.FirstOrDefault(s => s.childCount == 0);
+        if (slot == null)
         {
             Debug.LogWarning("Нет свободных слотов для нового растения!");
             return;
         }
 
-        // Спавним растение в выбранный слот
-        GameObject plantObj = Instantiate(
-            plantPrefabs[index],
-            plantSlots[slotIndex].position,
-            Quaternion.identity,
-            transform // можно сделать дочерним объектом спавнера для чистоты
-        );
+        // Создаем объект растения
+        GameObject plantObj = Instantiate(plantPrefabs[prefabIndex], slot.position, Quaternion.identity, slot);
 
-        // Слот теперь занят
-        _slotOccupied[slotIndex] = true;
-
-        // Сохраняем ссылку на слот в самом растении, чтобы освободить позже
-        Plant plantComp = plantObj.GetComponent<Plant>();
-        if (plantComp != null)
+        // Получаем компонент Plant
+        Plant newPlant = plantObj.GetComponent<Plant>();
+        if (newPlant == null)
         {
-            plantComp.OnPlantDestroyed += () => _slotOccupied[slotIndex] = false;
+            Debug.LogError("Префаб растения не содержит компонент Plant!");
+            return;
         }
 
-        Debug.Log($"🌿 Растение '{plantObj.name}' заспавнено в слоте #{slotIndex}");
+        Debug.Log($"🌿 Растение '{newPlant.plantID}' заспавнено в слоте #{slot.GetSiblingIndex()}");
+
+        // 🔥 Патч: добавляем растение в AquariumController.plants
+        AquariumController aquarium = FindObjectOfType<AquariumController>();
+        if (aquarium != null)
+        {
+            List<Plant> list = aquarium.plants != null ? aquarium.plants.ToList() : new List<Plant>();
+            list.Add(newPlant);
+            aquarium.plants = list.ToArray();
+        }
     }
 }

@@ -105,8 +105,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28565125da335cc49bbb35a08bd84928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Plant
-  feedingPoints:
-  - {fileID: 0}
+  plantID: Plant2
+  feedingPoints: []
+  maxEnergy: 10
+  energy: 0
 --- !u!1 &2205789151372225451
 GameObject:
   m_ObjectHideFlags: 0

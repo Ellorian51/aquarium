@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8726321682066185865}
   - component: {fileID: 9142429902057572003}
-  - component: {fileID: 3235766808957084028}
+  - component: {fileID: -501547369671314193}
   m_Layer: 0
   m_Name: Plant1
   m_TagString: Untagged
@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 846762709953424700}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: -1.2, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalPosition: {x: -1.8989, y: -3.5393, z: 0}
+  m_LocalScale: {x: 0.6026, y: 0.704, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7566357589098687373}
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7216363179119990828, guid: f6479ddcc152f3045aa78aac38777868, type: 3}
+  m_Sprite: {fileID: -2217746986920467225, guid: b77d497c159f533409012bb030f92f5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,7 +93,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &3235766808957084028
+--- !u!114 &-501547369671314193
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,6 +108,8 @@ MonoBehaviour:
   plantID: Plant1
   feedingPoints:
   - {fileID: 0}
+  maxEnergy: 10
+  energy: 0
 --- !u!1 &2205789151372225451
 GameObject:
   m_ObjectHideFlags: 0

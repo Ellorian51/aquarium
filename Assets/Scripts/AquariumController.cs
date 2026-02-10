@@ -15,14 +15,9 @@ public class AquariumController : MonoBehaviour
     public GameObject[] fishPrefabs;
 
     [Header("Растения для кормежки")]
-    public Plant[] plants;
+    public Plant[] plants; // сюда попадают растения на сцене
 
     private List<FishMovement> activeFishes = new List<FishMovement>();
-
-    void Update()
-    {
-        // ПУСТО! Логика подъёма теперь в FishMovement
-    }
 
     // 🔥 СТАРЫЙ МЕТОД: рандомный спавн
     public void AddFish()
@@ -80,16 +75,17 @@ public class AquariumController : MonoBehaviour
             fishMovement.yOffsetSeed = Random.Range(0f, Mathf.PI * 2f);
         }
 
-        // Логика растений
+        // Логика растений для MoveToPointBehavior
         MoveToPointBehavior mtp = fishObj.GetComponent<MoveToPointBehavior>();
-        if (mtp != null && plants != null && plants.Length > 0)
+        if (mtp != null)
         {
             Plant targetPlant = null;
-            
+
+            // 1️⃣ Сначала пробуем любимое растение
             if (fish.favoritePlants != null && fish.favoritePlants.Count > 0)
             {
                 string favoriteID = fish.favoritePlants[Random.Range(0, fish.favoritePlants.Count)];
-                targetPlant = plants.FirstOrDefault(p => p.plantID.Trim() == favoriteID.Trim());
+                targetPlant = plants.FirstOrDefault(p => p != null && p.plantID.Trim() == favoriteID.Trim());
                 
                 if (targetPlant != null)
                 {
@@ -97,14 +93,26 @@ public class AquariumController : MonoBehaviour
                     Debug.Log($"🐟 {fishObj.name} → ЛЮБИМОЕ {targetPlant.plantID}");
                 }
             }
-            
-            if (targetPlant == null)
+
+            // 2️⃣ Если любимое не найдено — берем рандом из растений на сцене
+            if (targetPlant == null && plants != null && plants.Length > 0)
             {
-                int plantIdx = Random.Range(0, plants.Length);
-                targetPlant = plants[plantIdx];
-                mtp.plant = targetPlant;
-                Debug.Log($"🐟 {fishObj.name} → РАНДОМ {targetPlant.plantID}");
+                targetPlant = plants.FirstOrDefault(p => p != null);
+                if (targetPlant != null)
+                {
+                    mtp.plant = targetPlant;
+                    Debug.Log($"🐟 {fishObj.name} → РАНДОМ {targetPlant.plantID}");
+                }
             }
         }
+    }
+
+    // 🔹 Этот метод нужно вызвать после спавна нового растения, чтобы рыба его видела
+    public void RegisterPlantOnScene(Plant newPlant)
+    {
+        if (plants == null) plants = new Plant[0];
+        List<Plant> temp = plants.ToList();
+        temp.Add(newPlant);
+        plants = temp.ToArray();
     }
 }

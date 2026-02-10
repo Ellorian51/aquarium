@@ -111,8 +111,7 @@ MonoBehaviour:
   bottomDweller: 1
   isAggressive: 1
   favoritePlants:
-  - 3
-  - 4
+  - Plant1
   starveTime: 120
   aquarium: {fileID: 0}
   lastEatTime: 0

@@ -110,7 +110,7 @@ MonoBehaviour:
   bottomDweller: 0
   isAggressive: 0
   favoritePlants:
-  - 2
+  - Plant1
   starveTime: 50
   aquarium: {fileID: 0}
   lastEatTime: 0
