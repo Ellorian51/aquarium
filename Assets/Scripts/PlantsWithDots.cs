@@ -1,27 +1,45 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-/// <summary>
 /// Скрипт для растения: хранит точки кормежки для рыб.
-/// </summary>
 public class Plant : MonoBehaviour
 {
     [Header("🆔 ID СИСТЕМА")]
-    [SerializeField] public string plantID = "Plant1";  // Plant1, Plant2, Plant3...
-    [Header("Точки кормежки")]
-    public Transform[] feedingPoints; // сюда через инспектор добавляем точки внутри префаба
-    
-    /// Возвращает случайную точку кормежки
-    public Transform GetRandomFeedingPoint()
+    public string plantID = "Plant1";
+    public Transform[] feedingPoints;
+
+    [Header("Энергия растения")]
+    public float maxEnergy = 10f;
+    public float energy;
+
+    public delegate void PlantDestroyed();
+    public event PlantDestroyed OnPlantDestroyed;
+
+    void Awake()
     {
-        if (feedingPoints == null || feedingPoints.Length == 0)
+        energy = maxEnergy;
+    }
+
+    // Метод для потребления энергии рыбой
+    public bool TryConsume(float amount = 1f)
+    {
+        if (energy <= 0f) return false;
+
+        energy -= amount;
+        if (energy <= 0f)
         {
-            Debug.LogWarning($"🌿 {plantID} ({name}): нет feedingPoints!");
-            return null;
+            energy = 0f;
+            // Растение исчезает
+            Destroy(gameObject);
+            OnPlantDestroyed?.Invoke(); // уведомляем слот, что можно освободить
         }
 
-        int index = Random.Range(0, feedingPoints.Length);
-        Debug.Log($"🌿 {plantID}: выбрана точка #{index}");
-        return feedingPoints[index];
+        return true;
+    }
+
+    public Transform GetRandomFeedingPoint()
+    {
+        if (feedingPoints == null || feedingPoints.Length == 0) return null;
+        return feedingPoints[Random.Range(0, feedingPoints.Length)];
     }
 }

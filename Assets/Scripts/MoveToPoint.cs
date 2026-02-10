@@ -92,27 +92,38 @@ public class MoveToPointBehavior : MonoBehaviour
     void ChooseTargetPoint()
     {
         Fish fish = GetComponent<Fish>();
-        if (fish.favoritePlants == null || fish.favoritePlants.Count == 0)
+        if (fish == null || fish.favoritePlants == null || fish.favoritePlants.Count == 0)
         {
+            // Рыба не имеет любимых растений — просто не ест, плавает дальше
             Debug.LogWarning($"🐟 {gameObject.name} БЕЗ ЛЮБИМЫХ — НЕ ЕСТ!");
             return;
         }
 
-        string chosenID = fish.favoritePlants[Random.Range(0, fish.favoritePlants.Count)];  // Случайное любимое растение
+        // Проверяем аквариум и наличие растений
+        if (_aquarium == null || _aquarium.plants == null || _aquarium.plants.Length == 0)
+        {
+            // Растений нет, выходим, рыба будет вести себя как обычно
+            return;
+        }
 
-        Plant chosenPlant = _aquarium.plants.FirstOrDefault(p => p.plantID.Trim() == chosenID.Trim());
+        // Случайное любимое растение
+        string chosenID = fish.favoritePlants[Random.Range(0, fish.favoritePlants.Count)];
+
+        // Ищем растение в аквариуме
+        Plant chosenPlant = _aquarium.plants.FirstOrDefault(p => p != null && p.plantID.Trim() == chosenID.Trim());
         if (chosenPlant == null)
         {
             Debug.LogWarning($"🐟 {gameObject.name} НЕ НАЙДЕН '{chosenID}' — НЕ ЕСТ!");
             return;
         }
 
-        // Фикс: сохраняем plant для совместимости
+        // Сохраняем plant для совместимости
         this.plant = chosenPlant;
         Debug.Log($"🐟 {gameObject.name} → {chosenPlant.plantID} из '{string.Join(",", fish.favoritePlants)}'");
 
+        // Получаем случайную точку кормежки на растении
         Transform point = chosenPlant.GetRandomFeedingPoint();
-        if (point == null) return;
+        if (point == null) return; // Если точка не найдена, выходим
 
         // Создаем временную цель рядом с точкой
         GameObject target = new GameObject("TempTarget");

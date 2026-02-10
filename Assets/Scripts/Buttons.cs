@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class SpecificFishSpawner : MonoBehaviour
     private Button _button;
     private AquariumController aquarium;
     
+    [Obsolete("Obsolete")]
     void Start()
     {
         _button = GetComponent<Button>();
