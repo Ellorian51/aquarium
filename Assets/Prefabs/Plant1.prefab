@@ -107,7 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Plant
   plantID: Plant1
   feedingPoints:
-  - {fileID: 0}
+  - {fileID: 7566357589098687373}
   maxEnergy: 10
   energy: 0
 --- !u!1 &2205789151372225451

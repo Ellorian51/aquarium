@@ -112,7 +112,7 @@ MonoBehaviour:
   isAggressive: 0
   favoritePlants:
   - Plant1
-  starveTime: 30
+  starveTime: 50
   aquarium: {fileID: 0}
   lastEatTime: 0
   isStarving: 0
@@ -144,8 +144,8 @@ MonoBehaviour:
   dwellerDirectionChangeChance: 0.002
   dwellerYWobbleAmount: 0.1
   fleeSpeedMultiplier: 2.8
-  fleeDuration: 3
-  fleeDistance: 5.18
+  fleeDuration: 2.43
+  fleeDistance: 3.73
 --- !u!114 &6082326187590262783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,8 +158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6651fe5f3ff14545ad02f53f81ed0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToPointBehavior
-  plant: {fileID: 3235766808957084028, guid: 5fbde925a5a7c004b90414a2962dca35, type: 3}
-  speed: 1
+  plant: {fileID: 0}
+  speed: 2
   feedingRadius: 1
   moveInterval: 15
   stayDurationMin: 0.3

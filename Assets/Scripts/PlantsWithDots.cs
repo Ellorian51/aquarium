@@ -12,12 +12,29 @@ public class Plant : MonoBehaviour
     public float maxEnergy = 10f;
     public float energy;
 
+    // 🔥 КЭШ аквариума (1 раз!)
+    private AquariumController aquarium;
+
     public delegate void PlantDestroyed();
     public event PlantDestroyed OnPlantDestroyed;
 
     void Awake()
     {
         energy = maxEnergy;
+    }
+
+    void Start()  // 🔥 ДОБАВЛЕН: САМ регистрируется!
+    {
+        aquarium = FindFirstObjectByType<AquariumController>();
+        if (aquarium != null)
+        {
+            aquarium.RegisterPlant(this);
+            Debug.Log($"🌿 '{plantID}' САМ зарегистрировался в AC");
+        }
+        else
+        {
+            Debug.LogWarning($"🌿 '{plantID}' НЕ НАШЁЛ AC!");
+        }
     }
 
     // Метод для потребления энергии рыбой
@@ -29,9 +46,8 @@ public class Plant : MonoBehaviour
         if (energy <= 0f)
         {
             energy = 0f;
-            // Растение исчезает
             Destroy(gameObject);
-            OnPlantDestroyed?.Invoke(); // уведомляем слот, что можно освободить
+            OnPlantDestroyed?.Invoke();
         }
 
         return true;
@@ -41,5 +57,14 @@ public class Plant : MonoBehaviour
     {
         if (feedingPoints == null || feedingPoints.Length == 0) return null;
         return feedingPoints[Random.Range(0, feedingPoints.Length)];
+    }
+
+    void OnDestroy()
+    {
+        if (aquarium != null)
+        {
+            aquarium.UnregisterPlant(this);
+            Debug.Log($"🌿 '{plantID}' САМ удалился из AC");
+        }
     }
 }

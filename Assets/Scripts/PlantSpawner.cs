@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
 using System.Linq;
-
 
 /// Спавн растений в заранее подготовленные слоты.
 /// При спавне новое растение добавляется в AquariumController.plants
@@ -56,16 +54,6 @@ public class PlantSpawner : MonoBehaviour
             Debug.LogError("Префаб растения не содержит компонент Plant!");
             return;
         }
-
         Debug.Log($"🌿 Растение '{newPlant.plantID}' заспавнено в слоте #{slot.GetSiblingIndex()}");
-
-        // 🔥 Патч: добавляем растение в AquariumController.plants
-        AquariumController aquarium = FindObjectOfType<AquariumController>();
-        if (aquarium != null)
-        {
-            List<Plant> list = aquarium.plants != null ? aquarium.plants.ToList() : new List<Plant>();
-            list.Add(newPlant);
-            aquarium.plants = list.ToArray();
-        }
     }
 }

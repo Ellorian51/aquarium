@@ -176,8 +176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf549cb11a4e9447a982ae964207d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RepelBehavior
-  detectRadius: 1.9
-  attackChance: 0.1
+  detectRadius: 1.43
+  attackChance: 0.037
   fleeCooldown: 2.05
   scaredCooldown: 5
 --- !u!58 &-8654517000193421816

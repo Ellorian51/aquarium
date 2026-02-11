@@ -8,21 +8,22 @@ public class SpecificFishSpawner : MonoBehaviour
     public string fishType = "Fish Agro";  // Просто имя типа рыбы
     
     private Button _button;
-    private AquariumController aquarium;
+    [SerializeField] private AquariumController aquarium;
     
     [Obsolete("Obsolete")]
     void Start()
     {
         _button = GetComponent<Button>();
-        aquarium = FindObjectOfType<AquariumController>();  // Находит сам
-        
-        _button.onClick.AddListener(() => aquarium.SpawnSpecificFish(fishType));
-        Debug.Log($"✅ Кнопка '{fishType}' готова");
-    }
+        aquarium = FindObjectOfType<AquariumController>();  
     
+        // ✅ УБРАЛИ вызов старого метода - кнопка теперь "пустая"
+        Debug.Log($"✅ Кнопка '{fishType}' готова (OnClick через Inspector)");
+    }
+
     void OnDestroy()
     {
         if (_button != null)
-            _button.onClick.RemoveListener(() => aquarium?.SpawnSpecificFish(fishType));
+            _button.onClick.RemoveAllListeners();
+    
     }
 }
