@@ -28,7 +28,13 @@ public class MoveToPointBehavior : MonoBehaviour
 
     void Update()
     {
-        if (_aquarium == null || _aquarium.plants == null || _aquarium.plants.Length == 0) return; 
+        if (_aquarium == null || _aquarium.plants == null || _aquarium.plants.Length == 0) return;
+        if (_targetPoint != null && _targetPoint.gameObject == null)
+        {
+            _targetPoint = null;
+            _moving = false;
+            return;
+        }
         // Если нет растений — выходим, двигаться некуда
 
         // 1. ПАУЗА (stayTimer)
@@ -60,7 +66,7 @@ public class MoveToPointBehavior : MonoBehaviour
         }
 
         // 3. Движение к точке
-        if (_targetPoint != null)
+        if (_targetPoint != null && _targetPoint.gameObject != null)  // 🔥 +1 проверка
         {
             Vector3 dir = (_targetPoint.position - transform.position); // Направление к цели
             float dist = dir.magnitude; // Расстояние до цели
@@ -80,6 +86,10 @@ public class MoveToPointBehavior : MonoBehaviour
             {
                 transform.position = _targetPoint.position;
                 _stayTimer = Random.Range(stayDurationMin, stayDurationMax); // Случайная пауза
+                if (plant != null && plant.TryConsume())
+                {
+                    Debug.Log($"🌿 {plant.plantID} потеряло 1 энергии: {plant.energy}/{plant.maxEnergy}");
+                }
                 Destroy(_targetPoint.gameObject); // Удаляем временную цель
                 _targetPoint = null;
 
@@ -135,5 +145,14 @@ public class MoveToPointBehavior : MonoBehaviour
 
         _targetPoint = target.transform;
         _moving = true;
+    }
+    public void StopFeeding()
+    {
+        _moving = false;
+        if (_targetPoint != null)
+        {
+            Destroy(_targetPoint.gameObject);
+            _targetPoint = null;
+        }
     }
 }

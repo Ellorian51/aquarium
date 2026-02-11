@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using Random = UnityEngine.Random;  // ✅ Алиас наверху
+using Random = UnityEngine.Random; 
 
 public class ScaryMove : MonoBehaviour
 {
@@ -21,7 +21,7 @@ public class ScaryMove : MonoBehaviour
 
     private Fish _fish;
     private float _lastScareTime;
-    private float _lastScaredTime;  // ✅ НОВОЕ: когда сам испугался
+    private float _lastScaredTime;  
 
     void Start()
     {

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8726321682066185865}
   - component: {fileID: 9142429902057572003}
   - component: {fileID: 3235766808957084028}
+  - component: {fileID: -517438740066244240}
   m_Layer: 0
   m_Name: Plant2
   m_TagString: Untagged
@@ -27,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 846762709953424700}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: -1.2, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalPosition: {x: -24.51, y: 8.79, z: 0}
+  m_LocalScale: {x: 1.1876, y: 1.1972, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7566357589098687373}
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -5600456472141597053, guid: 827fdee86eefe6f4da9704d2b3863bc2, type: 3}
+  m_Sprite: {fileID: 2305620155017334221, guid: e417a72470543504292f889ba9c8d26f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -106,9 +107,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Plant
   plantID: Plant2
-  feedingPoints: []
+  feedingPoints:
+  - {fileID: 7566357589098687373}
   maxEnergy: 10
   energy: 0
+--- !u!114 &-517438740066244240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846762709953424700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3290605f5dc49964fb71493941fc6c15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantSpawner
+  plantSlots:
+  - {fileID: 7566357589098687373}
+  plantPrefabs:
+  - {fileID: 846762709953424700}
 --- !u!1 &2205789151372225451
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,7 +137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7566357589098687373}
   m_Layer: 0
-  m_Name: Point
+  m_Name: Point2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134,8 +152,8 @@ Transform:
   m_GameObject: {fileID: 2205789151372225451}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.064, y: 0.206, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.0965024, y: 0.91377014, z: 0.92709714}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8726321682066185865}
