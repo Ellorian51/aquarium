@@ -1,23 +1,13 @@
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random; 
 
 public class ScaryMove : MonoBehaviour
 {
     [Header("Отпугивание")]
-    [Range(0.5f, 3f)]
-    public float detectRadius = 1.5f;
-    
-    [Header("Частота действия")]
-    [Range(0f, 0.1f)] 
-    public float attackChance = 0.02f;
-    
-    [Header("Логика")]
-    [Range(1f, 10f)] 
-    public float fleeCooldown = 10f;
-    
-    [Header("После испуга")]
-    public float scaredCooldown = 5f;  // НЕ пугает 5 сек после flee
+    [Range(0.5f, 3f)] public float detectRadius = 1.5f;
+    [Range(0f, 0.1f)] public float attackChance = 0.02f;
+    [Range(1f, 10f)] public float fleeCooldown = 10f;
+    public float scaredCooldown = 5f;
 
     private Fish _fish;
     private float _lastScareTime;
@@ -29,26 +19,28 @@ public class ScaryMove : MonoBehaviour
         Debug.Log($"{gameObject.name} Scary готов!");
     }
 
-    [Obsolete("Obsolete")]
-    void Update()
+    void Update()  // ✅ Убрали [Obsolete]
     {
         if (!_fish.isAggressive) return;
     
         MoveToPointBehavior ownMtp = GetComponent<MoveToPointBehavior>();
         if (ownMtp != null && ownMtp.isMoving) return;
         if (Time.time - _lastScaredTime < scaredCooldown) return;
-        
         if (Time.time - _lastScareTime < fleeCooldown) return;
 
         if (Random.value > attackChance) return;
+        
         Collider2D[] nearby = new Collider2D[20];
         int count = Physics2D.OverlapCircleNonAlloc(transform.position, detectRadius, nearby);
+        
         for (int i = 0; i < count; i++)
         {
+            
+            if (!nearby[i].CompareTag("Fish")) continue;
+            
             Fish otherFish = nearby[i].GetComponent<Fish>();
             if (otherFish == null || otherFish == _fish) continue;
 
-            // 🔥 Пугаем ТОЛЬКО НЕагрессивных рыб
             if (!otherFish.isAggressive)
             {
                 Debug.Log($"🦈 {gameObject.name} пугает {nearby[i].name}");
@@ -60,11 +52,10 @@ public class ScaryMove : MonoBehaviour
                     otherMovement.FleeFromFish(Mathf.Sign(victimFleeDir.x));
                 }
                 
-                // 🔥 ПРИНУДИТЕЛЬНО ОСТАНАВЛИВАЕМ КОРМЕЖКУ
                 MoveToPointBehavior victimMtp = nearby[i].GetComponent<MoveToPointBehavior>();
                 if (victimMtp != null)
                 {
-                    victimMtp.enabled = false;  // БЛОКИРУЕМ движение к еде
+                    victimMtp.enabled = false;
                     Debug.Log($"🍽️ {nearby[i].name} кормление ОСТАНОВЛЕНО!");
                 }
             
@@ -74,7 +65,6 @@ public class ScaryMove : MonoBehaviour
         }
     }
 
-    // ✅ ПУБЛИЧНЫЙ МЕТОД: вызывается при flee
     public void OnScared()
     {
         _lastScaredTime = Time.time;

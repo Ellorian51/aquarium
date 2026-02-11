@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using System.Linq;
+
 
 /// Спавн растений в заранее подготовленные слоты.
 /// При спавне новое растение добавляется в AquariumController.plants
@@ -37,10 +37,10 @@ public class PlantSpawner : MonoBehaviour
         }
 
         // Ищем первый свободный слот
-        Transform slot = plantSlots.FirstOrDefault(s => s.childCount == 0);
-        if (slot == null)
+        Transform slot = plantSlots[prefabIndex];  // ФИКСИРОВАННЫЙ слот по индексу!
+        if (slot == null || slot.childCount > 0)
         {
-            Debug.LogWarning("Нет свободных слотов для нового растения!");
+            Debug.LogWarning($"Слот {prefabIndex} занят или не существует!");
             return;
         }
 

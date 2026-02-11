@@ -68,7 +68,6 @@ public class FishMovement : MonoBehaviour
     {
         if (_fish != null) _fish.CheckStarvation();  // ← КЭШ ВМЕСТО CheckStarvation (ОН ЖРЁТ)
         _prevPos = transform.position;
-        _prevPos = transform.position;
 
         // 🔥 НОВЫЙ КОД: подъём бездействующих рыб
         if(!IsActiveMovement())

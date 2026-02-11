@@ -1,5 +1,5 @@
 using UnityEngine;
-using Random = UnityEngine.Random; // Чтобы не путать с System.Random
+using Random = UnityEngine.Random; 
 using System.Linq;
 
 public class MoveToPointBehavior : MonoBehaviour
@@ -15,15 +15,17 @@ public class MoveToPointBehavior : MonoBehaviour
     private AquariumController _aquarium; // Контроллер аквариума
     private Transform _targetPoint; // Временная цель для движения
     private bool _moving; // Флаг, что рыба движется
+    private Fish _fish;
     private float _stayTimer; // Таймер паузы на точке
     private float _timer; // Таймер до следующего движения
 
-    public bool isMoving => _moving; // Публичное свойство для проверки движения
+    public bool isMoving => _moving; 
 
     void Start()
     {
-        _aquarium = GetComponentInParent<AquariumController>(); // Находим контроллер аквариума сверху в иерархии
-        _timer = moveInterval; // Инициализируем таймер
+        _aquarium = GetComponentInParent<AquariumController>();
+        _fish = GetComponent<Fish>();  // 🔥 КЭШИРУЕМ 1 РАЗ!
+        _timer = moveInterval;
     }
 
     void Update()
@@ -101,10 +103,8 @@ public class MoveToPointBehavior : MonoBehaviour
     /// 🔥 Выбираем новую цель из любимых растений рыбы
     void ChooseTargetPoint()
     {
-        Fish fish = GetComponent<Fish>();
-        if (fish == null || fish.favoritePlants == null || fish.favoritePlants.Count == 0)
+        if (_fish == null || _fish.favoritePlants == null || _fish.favoritePlants.Count == 0)
         {
-            // Рыба не имеет любимых растений — просто не ест, плавает дальше
             Debug.LogWarning($"🐟 {gameObject.name} БЕЗ ЛЮБИМЫХ — НЕ ЕСТ!");
             return;
         }
@@ -117,7 +117,7 @@ public class MoveToPointBehavior : MonoBehaviour
         }
 
         // Случайное любимое растение
-        string chosenID = fish.favoritePlants[Random.Range(0, fish.favoritePlants.Count)];
+        string chosenID = _fish.favoritePlants[Random.Range(0, _fish.favoritePlants.Count)];
 
         // Ищем растение в аквариуме
         Plant chosenPlant = _aquarium.plants.FirstOrDefault(p => p != null && p.plantID.Trim() == chosenID.Trim());
@@ -129,7 +129,7 @@ public class MoveToPointBehavior : MonoBehaviour
 
         // Сохраняем plant для совместимости
         this.plant = chosenPlant;
-        Debug.Log($"🐟 {gameObject.name} → {chosenPlant.plantID} из '{string.Join(",", fish.favoritePlants)}'");
+        Debug.Log($"🐟 {gameObject.name} → {chosenPlant.plantID} из '{string.Join(",", _fish.favoritePlants)}'");
 
         // Получаем случайную точку кормежки на растении
         Transform point = chosenPlant.GetRandomFeedingPoint();
