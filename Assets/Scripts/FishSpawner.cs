@@ -13,12 +13,10 @@ public class FishSpawner : MonoBehaviour
     
     [Header("Тип рыбы для кнопки")]
     public string fishType = "Fish Agro";
-
     private Button _button;
 
     void Awake()
     {
-        // ✅ Инициализация ДО Start() всех скриптов
         _button = GetComponent<Button>();
         aquarium = aquarium ?? FindFirstObjectByType<AquariumController>();
     }

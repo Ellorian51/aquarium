@@ -112,7 +112,7 @@ MonoBehaviour:
   isAggressive: 0
   favoritePlants:
   - Plant1
-  starveTime: 50
+  starveTime: 120
   aquarium: {fileID: 0}
   lastEatTime: 0
   isStarving: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   plant: {fileID: 0}
   speed: 2
   feedingRadius: 1
-  moveInterval: 1
+  moveInterval: 30
   stayDurationMin: 0.3
   stayDurationMax: 2
 --- !u!95 &7399710127749336055

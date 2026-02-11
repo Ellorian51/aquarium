@@ -112,7 +112,7 @@ MonoBehaviour:
   isAggressive: 1
   favoritePlants:
   - Plant1
-  starveTime: 48
+  starveTime: 50
   aquarium: {fileID: 0}
   lastEatTime: 0
   isStarving: 0
